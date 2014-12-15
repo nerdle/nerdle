@@ -1,0 +1,9 @@
+# Eclipse
+.project
+.settings
+
+# Maven
+target/
+
+# OSX
+.DS_Store
