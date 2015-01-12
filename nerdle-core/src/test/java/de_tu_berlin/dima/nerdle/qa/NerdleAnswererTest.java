@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
@@ -125,6 +126,7 @@ public class NerdleAnswererTest {
     }
 
     @Test
+    @Ignore
     public void answerToWho() throws InterruptedException, ConfigurationException {
         // TINKERPOP
         List<GroupedAnswer> answers;

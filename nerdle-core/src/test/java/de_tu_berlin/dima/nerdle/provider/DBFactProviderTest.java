@@ -22,6 +22,7 @@ import java.io.File;
 import java.util.List;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de_tu_berlin.dima.nerdle.model.NerdleArg;
@@ -40,12 +41,14 @@ public class DBFactProviderTest {
     }
 
     @Test
+    @Ignore
     public void testFactsByPredicate() {
         List<NerdleFact> factsByPredicate = dbFactProvider.getFactsByPredicate(new NerdlePredicate("is", "be", "be.01"));
         assertEquals(2, factsByPredicate.size());
     }
 
     @Test
+    @Ignore
     public void testFactsFactsByMatch() {
         NerdleFact questionFact = new NerdleFact("", "");
         questionFact.setPredicate(new NerdlePredicate("is", "be", "be.01"));

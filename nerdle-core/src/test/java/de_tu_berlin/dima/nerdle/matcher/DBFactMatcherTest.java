@@ -22,6 +22,7 @@ import java.io.File;
 import java.util.List;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de_tu_berlin.dima.nerdle.model.NerdleArg;
@@ -44,6 +45,7 @@ public class DBFactMatcherTest {
     }
 
     @Test
+    @Ignore
     public void testExact() {
         NerdleFact questionFact = new NerdleFact("", "");
         questionFact.setPredicate(new NerdlePredicate("is", "be", "be.01"));
