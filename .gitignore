@@ -8,3 +8,6 @@ target/
 
 # OSX
 .DS_Store
+
+# Nerdle
+nerdle_config.properties
