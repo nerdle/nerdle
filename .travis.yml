@@ -1,3 +1,4 @@
 language: java
 before_script:
-  - psql -c 'create database nerdle_test;' -U postgres
+  - "psql -c 'create database nerdle_test;' -U postgres"
+  - "export JAVA_OPTS=-Xmx512m" 	
