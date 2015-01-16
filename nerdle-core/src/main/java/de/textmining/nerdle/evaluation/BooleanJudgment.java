@@ -14,23 +14,26 @@
  * limitations under the License.
  */
 
-package de_tu_berlin.dima.nerdle;
+package de.textmining.nerdle.evaluation;
 
-import java.util.List;
+public class BooleanJudgment extends Judgment {
+    private boolean isCorrect;
 
-import de.textmining.nerdle.information.extraction.ClearNLPHelper;
-import org.junit.Test;
+    public BooleanJudgment() {
+        super();
+    }
 
-import de.textmining.nerdle.question.answering.model.NerdleFact;
+    public BooleanJudgment(boolean isCorrect) {
+        super();
+        this.isCorrect = isCorrect;
+    }
 
-public class ClearNLPHelperTest {
+    public boolean isCorrect() {
+        return isCorrect;
+    }
 
-    @Test
-    public void test() {
-        ClearNLPHelper instance = ClearNLPHelper.INSTANCE;
-        List<NerdleFact> extractFactsFromSentence = instance.extractFactsFromSentence("In another episode , Homer unwittingly works for a terrorist .",
-                "source");
-        System.out.println(extractFactsFromSentence);
+    public void setCorrect(boolean isCorrect) {
+        this.isCorrect = isCorrect;
     }
 
 }

@@ -21,9 +21,12 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+import de.textmining.nerdle.question.answering.fact.matcher.FactMatcher;
 import de.textmining.nerdle.question.answering.question.parsing.ClearNLPQuestionParser;
 import org.apache.commons.configuration.ConfigurationException;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
@@ -31,13 +34,17 @@ import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 import de.textmining.nerdle.question.answering.model.NerdleArg;
 import de.textmining.nerdle.question.answering.model.NerdleFact;
 import de.textmining.nerdle.question.answering.model.NerdlePredicate;
-import de.textmining.nerdle.database.FactProvider;
+import de.textmining.nerdle.database.DBFactProvider;
 import de.textmining.nerdle.utils.TinkerpopTranformer;
 
-public class QuestionAnswerTest {
+public class ExactQuestionFactMatcherTest {
 
-    private static FactProvider factProvider;
-    private static ClearNLPQuestionParser answerQuestion;
+    private static ClearNLPQuestionParser tinkerpopAnswerQuestion;
+    private static FactMatcher tinkerpopQuestionFactMatcher;
+
+    private static DBFactProvider dbFactProvider;
+    private static ClearNLPQuestionParser dbAnswerQuestion;
+    private static FactMatcher dbQuestionFactMatcher;
 
     @BeforeClass
     public static void setup() {
@@ -92,67 +99,22 @@ public class QuestionAnswerTest {
 
         TinkerpopTranformer.transform(nerdleFact, graph);
 
+        // TINKERPOP
+
+        //   dbQuestionFactMatcher = new ExactQuestionFactMatcher(dbAnswerQuestion);
     }
 
     @Test
+    @Ignore
     public void answerToWho() throws InterruptedException, ConfigurationException {
 
-    /*    QuestionAnswerResponse questionAnswerResponse;
-
-        questionAnswerResponse = answerQuestion.answerToGeneric(factProvider, "Who was born in Ulm.");
-
-        assertEquals(2, questionAnswerResponse.getAnswerToScore().size());
-
-        questionAnswerResponse = answerQuestion.answerToGeneric(factProvider, "Who was born on March 14th.");
-
-        assertEquals(1, questionAnswerResponse.getAnswerToScore().size());
-
-        questionAnswerResponse = answerQuestion.answerToGeneric(factProvider, "Who was born on March 14th in Berlin.");
-
-        assertEquals(1, questionAnswerResponse.getAnswerToScore().size());
-
-        questionAnswerResponse = answerQuestion.answerToGeneric(factProvider, "Who spends a great deal of his time.");
-
-        assertEquals(1, questionAnswerResponse.getAnswerToScore().size());*/
-
-    }
-
-    @Test
-    public void answerToWhich() throws InterruptedException, ConfigurationException {
-
-
-    }
-
-    @Test
-    public void answerToWhere() throws InterruptedException, ConfigurationException {
-
-   /*     QuestionAnswerResponse questionAnswerResponse;
-
-        questionAnswerResponse = answerQuestion.answerToGeneric(factProvider, "Where was Albert Einstein born?");
-
-        assertEquals(2, questionAnswerResponse.getAnswerToScore().size());
-
-        questionAnswerResponse = answerQuestion.answerToGeneric(factProvider, "Where was Albert Einstein born on March 14th?");
-
-        assertEquals(2, questionAnswerResponse.getAnswerToScore().size());*/
-    }
-
-    @Test
-    public void answerToWhen() throws InterruptedException, ConfigurationException {
-
-   /*     QuestionAnswerResponse questionAnswerResponse;
-
-        questionAnswerResponse = answerQuestion.answerToGeneric(factProvider, "When was Albert Einstein born?");
-
-        assertEquals(1, questionAnswerResponse.getAnswerToScore().size());
-
-        questionAnswerResponse = answerQuestion.answerToGeneric(factProvider, "When was Albert Einstein born in Ulm?");
-
-        assertEquals(0, questionAnswerResponse.getAnswerToScore().size());
-
-        questionAnswerResponse = answerQuestion.answerToGeneric(factProvider, "When was Albert Einstein born in Berlin?");
-
-        assertEquals(0, questionAnswerResponse.getAnswerToScore().size());*/
+        // DB
+        // "Who is funny?"
+        final NerdleFact nerdleFact = new NerdleFact("", "", new NerdlePredicate("is", "be", "be.01"), null);
+        List<NerdleFact> question = Lists.newArrayList(nerdleFact);
+        dbQuestionFactMatcher.getAnswers(dbFactProvider, question);
+        //    assertEquals(1, answers.size());
+        //    assertEquals("Bart", answers.get(0).getSubject());*/
     }
 
 }

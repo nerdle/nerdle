@@ -19,6 +19,7 @@ package de_tu_berlin.dima.nerdle.tinkerpop;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.textmining.nerdle.utils.TinkerpopTranformer;
 import junit.framework.Assert;
 
 import org.junit.BeforeClass;
@@ -27,9 +28,9 @@ import org.junit.Test;
 import com.tinkerpop.blueprints.Vertex;
 import com.tinkerpop.blueprints.impls.tg.TinkerGraph;
 
-import de_tu_berlin.dima.nerdle.model.NerdleArg;
-import de_tu_berlin.dima.nerdle.model.NerdleFact;
-import de_tu_berlin.dima.nerdle.model.NerdlePredicate;
+import de.textmining.nerdle.question.answering.model.NerdleArg;
+import de.textmining.nerdle.question.answering.model.NerdleFact;
+import de.textmining.nerdle.question.answering.model.NerdlePredicate;
 
 public class TinkerTransformerTest {
 

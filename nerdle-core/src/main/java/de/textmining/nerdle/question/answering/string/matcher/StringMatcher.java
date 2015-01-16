@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package de_tu_berlin.dima.nerdle;
+package de.textmining.nerdle.question.answering.string.matcher;
 
 import java.util.List;
 
-import de.textmining.nerdle.information.extraction.ClearNLPHelper;
-import org.junit.Test;
+import de.textmining.nerdle.question.answering.model.NerdleArg;
 
-import de.textmining.nerdle.question.answering.model.NerdleFact;
+public interface StringMatcher {
 
-public class ClearNLPHelperTest {
+    public double distance(String a, String b);
 
-    @Test
-    public void test() {
-        ClearNLPHelper instance = ClearNLPHelper.INSTANCE;
-        List<NerdleFact> extractFactsFromSentence = instance.extractFactsFromSentence("In another episode , Homer unwittingly works for a terrorist .",
-                "source");
-        System.out.println(extractFactsFromSentence);
-    }
+    public boolean match(String a, String b);
 
+    public double argumentDistance(List<NerdleArg> arguments, NerdleArg argument);
+
+    public boolean argumentAndLabelMatch(List<NerdleArg> arguments, NerdleArg argument);
+
+    public boolean exploreArgumentAndLabelMatch(List<NerdleArg> arguments, NerdleArg argument);
 }

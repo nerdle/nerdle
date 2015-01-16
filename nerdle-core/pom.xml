@@ -98,12 +98,6 @@
 
 		<!-- Evaluation -->
 
-		<dependency>
-			<groupId>de.tu_berlin.dima</groupId>
-			<artifactId>qaeval</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-
 		<!-- Postgres -->
 
 		<dependency>

@@ -14,23 +14,25 @@
  * limitations under the License.
  */
 
-package de_tu_berlin.dima.nerdle;
+package de.textmining.nerdle.evaluation;
 
-import java.util.List;
+public class ScoreJudgment extends Judgment {
+    private double score;
 
-import de.textmining.nerdle.information.extraction.ClearNLPHelper;
-import org.junit.Test;
+    public ScoreJudgment() {
+        super();
+    }
 
-import de.textmining.nerdle.question.answering.model.NerdleFact;
+    public ScoreJudgment(double score) {
+        this.score = score;
+    }
 
-public class ClearNLPHelperTest {
+    public double getScore() {
+        return score;
+    }
 
-    @Test
-    public void test() {
-        ClearNLPHelper instance = ClearNLPHelper.INSTANCE;
-        List<NerdleFact> extractFactsFromSentence = instance.extractFactsFromSentence("In another episode , Homer unwittingly works for a terrorist .",
-                "source");
-        System.out.println(extractFactsFromSentence);
+    public void setScore(double score) {
+        this.score = score;
     }
 
 }

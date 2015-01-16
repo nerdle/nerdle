@@ -14,23 +14,16 @@
  * limitations under the License.
  */
 
-package de_tu_berlin.dima.nerdle;
+package de.textmining.nerdle.database;
 
 import java.util.List;
 
-import de.textmining.nerdle.information.extraction.ClearNLPHelper;
-import org.junit.Test;
-
+import de.textmining.nerdle.question.answering.model.NerdleArg;
 import de.textmining.nerdle.question.answering.model.NerdleFact;
+import de.textmining.nerdle.question.answering.model.NerdlePredicate;
 
-public class ClearNLPHelperTest {
+public interface FactProvider {
+    List<NerdleFact> getFactsByPredicate(NerdlePredicate questionPredicate);
 
-    @Test
-    public void test() {
-        ClearNLPHelper instance = ClearNLPHelper.INSTANCE;
-        List<NerdleFact> extractFactsFromSentence = instance.extractFactsFromSentence("In another episode , Homer unwittingly works for a terrorist .",
-                "source");
-        System.out.println(extractFactsFromSentence);
-    }
-
+    List<NerdleFact> getFactsByMatch(NerdleFact questionFact, NerdleArg searchArg);
 }

@@ -14,23 +14,21 @@
  * limitations under the License.
  */
 
-package de_tu_berlin.dima.nerdle;
+package de.textmining.nerdle.question.answering;
 
-import java.util.List;
+import de.textmining.nerdle.question.answering.model.Answer;
+import de.textmining.nerdle.question.answering.model.Question;
 
-import de.textmining.nerdle.information.extraction.ClearNLPHelper;
-import org.junit.Test;
+/**
+ * Central interface to question answering. It's principal implementation is the
+ * @MatchFactQuestionAnswerer.
+ *
+ * Author: alan.akbik@tu-berlin.de
+ */
+public interface QuestionAnswerer {
 
-import de.textmining.nerdle.question.answering.model.NerdleFact;
-
-public class ClearNLPHelperTest {
-
-    @Test
-    public void test() {
-        ClearNLPHelper instance = ClearNLPHelper.INSTANCE;
-        List<NerdleFact> extractFactsFromSentence = instance.extractFactsFromSentence("In another episode , Homer unwittingly works for a terrorist .",
-                "source");
-        System.out.println(extractFactsFromSentence);
-    }
-
+    /*
+    Get an answer to a question.
+     */
+    public Answer answer(Question question);
 }
