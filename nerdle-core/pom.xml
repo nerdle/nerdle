@@ -40,28 +40,12 @@
 			<version>2.0</version>
 		</dependency>
 
-		<!-- tinkerpop dependencies -->
+		<!-- apache commons -->
 
 		<dependency>
-			<groupId>com.tinkerpop.blueprints</groupId>
-			<artifactId>blueprints-core</artifactId>
-			<version>2.4.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.tinkerpop.gremlin</groupId>
-			<artifactId>gremlin-java</artifactId>
-			<version>2.4.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.tinkerpop.blueprints</groupId>
-			<artifactId>blueprints-neo4j-graph</artifactId>
-			<version>2.4.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>com.tinkerpop.blueprints</groupId>
-			<artifactId>blueprints-neo4jbatch-graph</artifactId>
-			<version>2.2.0</version>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.6</version>
 		</dependency>
 
 		<!-- clearnlp -->
@@ -95,8 +79,6 @@
 			<artifactId>clearnlp-general-en-srl</artifactId>
 			<version>1.1</version>
 		</dependency>
-
-		<!-- Evaluation -->
 
 		<!-- Postgres -->
 

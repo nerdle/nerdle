@@ -21,14 +21,14 @@ import de.textmining.nerdle.question.answering.model.Question;
 
 /**
  * Central interface to question answering. It's principal implementation is the
+ * 
  * @MatchFactQuestionAnswerer.
- *
- * Author: alan.akbik@tu-berlin.de
+ * 
  */
 public interface QuestionAnswerer {
 
     /*
-    Get an answer to a question.
+     * Get an answer to a question.
      */
     public Answer answer(Question question);
 }

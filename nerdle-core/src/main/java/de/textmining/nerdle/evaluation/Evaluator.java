@@ -17,6 +17,7 @@
 package de.textmining.nerdle.evaluation;
 
 import de.textmining.nerdle.evaluation.metrics.JaccardMetric;
+import de.textmining.nerdle.information.extraction.ClearNLPHelper;
 import de.textmining.nerdle.question.answering.QuestionAnswerer;
 import de.textmining.nerdle.question.answering.model.Answer;
 import de.textmining.nerdle.question.answering.model.Question;
@@ -33,12 +34,13 @@ public class Evaluator {
     public Evaluator(EvaluationConfig evaluationConfig) {
         super();
         this.evaluationConfig = evaluationConfig;
-
         this.booleanAnswerEvaluator = new BooleanAnswerEvaluator(new JaccardMetric());
     }
 
     public void start(QuestionAnswerer questionAnswerer) throws URISyntaxException, FileNotFoundException {
-
+        
+        ClearNLPHelper.INSTANCE.getClass();
+        
         System.out.println("QA Evaluaton Framework Results");
         System.out.println("==============================");
         System.out.println();
@@ -63,8 +65,6 @@ public class Evaluator {
 
                 int index = 0;
                 for (EvaluationEntry evaluationEntry : evaluationSet.getEvaluationSet()) {
-
-                    System.out.println("evaluationEntry = " + evaluationEntry);
 
                     if (index == evaluationConfig.getLimit()) {
                         break;

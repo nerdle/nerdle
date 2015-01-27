@@ -16,9 +16,11 @@
 
 package de.textmining.nerdle.question.answering.question.parsing;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.textmining.nerdle.question.answering.model.Question;
+
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.log4j.Logger;
 
@@ -36,16 +38,18 @@ public class ClearNLPQuestionParser implements QuestionParser {
         log.debug("Handling question: " + question.getQuestion());
 
         List<NerdleFact> questionFacts = ClearNLPHelper.INSTANCE.extractFactsFromSentence(question.getQuestion(), "");
-
+        List<NerdleFact> retFacts = new ArrayList<>();
+        
         for (NerdleFact questionFact : questionFacts) {
             for (NerdleArg nerdleArg : questionFact.getArguments()) {
                 if (nerdleArg.getArgLabel().startsWith("R-")) {
                     questionFact.setQuestionArg(new NerdleArg("", "", nerdleArg.getArgLabel().substring(2), ""));
+                    retFacts.add(questionFact);
                 }
             }
         }
 
-        return questionFacts;
+        return retFacts;
     }
 
 }

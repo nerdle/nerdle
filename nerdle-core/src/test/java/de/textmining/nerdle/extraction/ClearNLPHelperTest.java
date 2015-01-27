@@ -14,32 +14,24 @@
  * limitations under the License.
  */
 
-package de.textmining.nerdle.question.answering.model;
+package de.textmining.nerdle.extraction;
 
-import de.textmining.nerdle.evaluation.EvaluationEntry;
+import java.util.List;
 
-public class Question {
+import org.junit.Test;
 
-    private String question;
+import static org.junit.Assert.*;
 
-    public Question() {
-        super();
+import de.textmining.nerdle.information.extraction.ClearNLPHelper;
+import de.textmining.nerdle.question.answering.model.NerdleFact;
+
+public class ClearNLPHelperTest {
+
+    @Test
+    public void test() {
+        ClearNLPHelper instance = ClearNLPHelper.INSTANCE;
+        String sentence = "In another episode, Homer unwittingly works for a terrorist.";
+        List<NerdleFact> extractFactsFromSentence = instance.extractFactsFromSentence(sentence, "source");
+        assertTrue(extractFactsFromSentence.size() > 0);
     }
-
-    public Question(String question) {
-        this.question = question;
-    }
-
-    public Question(EvaluationEntry evaluationEntry) {
-        this.question = evaluationEntry.getQuestion();
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(String question) {
-        this.question = question;
-    }
-
 }

@@ -153,4 +153,66 @@ public enum ClearNLPHelper {
         return nerdleFacts;
     }
 
+    public void pirntExtractions(String text) {
+
+        DEPTree tree;
+
+        BufferedReader buffer = new BufferedReader(new StringReader(text));
+        for (List<String> tokens : segmenter.getSentences(buffer)) {
+            /* dependency tree */
+            tree = NLPGetter.toDEPTree(tokens);
+            String sentence = tree.toStringRaw();
+
+            System.out.println("\nSENT: " + sentence);
+
+            List<AbstractComponent> components = Lists.newArrayList(tagger, parser, identifier, classifier, labeler);
+
+            /* pos tagging */
+            for (AbstractComponent component : components) {
+                component.process(tree);
+            }
+
+            /* semantic role labeling */
+            srl(tree, sentence);
+
+            System.out.println(tree.toStringSRL());
+
+        }
+
+    }
+
+    private void srl(DEPTree tree, String sentence) {
+        List<Integer> handled = Lists.newArrayList();
+        StringIntPair[][] roots = tree.getSHeads();
+        for (StringIntPair[] root : roots) {
+            for (StringIntPair stringIntPair : root) {
+                if (handled.contains(stringIntPair.i))
+                    continue;
+                handled.add(stringIntPair.i);
+
+                SRLTree srlTree = tree.getSRLTree(stringIntPair.i);
+                DEPNode depNode = tree.get(stringIntPair.i);
+
+                /* predicate */
+                System.out.println("PRED: " + depNode.form + ":" + depNode.lemma + ":" + srlTree.getRolesetID());
+
+                /* arguments */
+                List<SRLArc> arguments = srlTree.getArguments();
+                for (SRLArc argument : arguments) {
+                    List<DEPNode> dependentNodeList = argument.getNode().getSubNodeSortedList();
+                    StringBuilder arg = new StringBuilder();
+                    // build argument string
+                    for (DEPNode node : dependentNodeList) {
+                        if (arg.length() > 0)
+                            arg.append(" ");
+                        arg.append(node.form);
+                    }
+                    String argStr = arg.toString();
+                    System.out.println("ARG : " + argStr + ":" + argument.getLabel() + ":" + argument.getNode().getLabel() + ":"
+                            + argument.getNode().getHead().lemma);
+                }
+            }
+        }
+    }
+
 }

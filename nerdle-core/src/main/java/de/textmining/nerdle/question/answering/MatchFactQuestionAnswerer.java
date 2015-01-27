@@ -20,23 +20,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedSet;
 
-import de.textmining.nerdle.question.answering.fact.matcher.ExactQuestionFactMatcher;
-import de.textmining.nerdle.question.answering.fact.matcher.FactMatcher;
-import de.textmining.nerdle.question.answering.model.NerdleFact;
-import de.textmining.nerdle.question.answering.question.parsing.ClearNLPQuestionParser;
-import de.textmining.nerdle.question.answering.question.parsing.QuestionParser;
 import org.apache.commons.configuration.ConfigurationException;
 
-import de.textmining.nerdle.question.answering.model.Answer;
-import de.textmining.nerdle.question.answering.model.Question;
 import de.textmining.nerdle.database.FactProvider;
-
+import de.textmining.nerdle.question.answering.fact.matcher.FactMatcher;
+import de.textmining.nerdle.question.answering.model.Answer;
+import de.textmining.nerdle.question.answering.model.NerdleFact;
+import de.textmining.nerdle.question.answering.model.Question;
+import de.textmining.nerdle.question.answering.question.parsing.QuestionParser;
 
 /**
- * Main implementation of @QuestionAnswerer interface. It requires three classes in order to run: A
- *
- * @QuestionParser that interprets a question, a @FactProvider that gives access to a database of facts,
- * and a @FactMatcher that matches the question to a fact in the database.
+ * Main implementation of @QuestionAnswerer interface. It requires three classes
+ * in order to run: A
+ * 
+ * @QuestionParser that interprets a question, a @FactProvider that gives access
+ *                 to a database of facts, and a @FactMatcher that matches the
+ *                 question to a fact in the database.
  */
 public class MatchFactQuestionAnswerer implements QuestionAnswerer {
 
@@ -44,29 +43,38 @@ public class MatchFactQuestionAnswerer implements QuestionAnswerer {
     private FactProvider factProvider;
     private QuestionParser questionParser;
 
-    public MatchFactQuestionAnswerer(QuestionParser questionParser,
-                                     FactMatcher questionFactMatcher,
-                                     FactProvider factProvider) {
-
+    public MatchFactQuestionAnswerer(QuestionParser questionParser, FactMatcher questionFactMatcher, FactProvider factProvider) {
         this.questionFactMatcher = questionFactMatcher;
         this.factProvider = factProvider;
         this.questionParser = questionParser;
     }
 
     /*
-        Get an answer to a question.
+     * Get an answer to a question.
      */
     @Override
     public Answer answer(Question question) {
         Answer finalAnswer = new Answer();
         try {
 
-            // The question parser interprets the question as a list of NerdleFacts
+            // The question parser interprets the question as a list of
+            // NerdleFacts
             List<NerdleFact> questionDesciption = questionParser.analyzeQuestion(question);
 
-            // The questionFactMatcher then matches this question against a data source as given by the factProvider
+            // The questionFactMatcher then matches this question against a data
+            // source as given by the factProvider
             SortedSet<Map.Entry<String, Float>> answers = questionFactMatcher.getAnswers(factProvider, questionDesciption);
+            
+            if (answers == null) {
+                System.out.println("answers");
+            }
+            
             for (Map.Entry<String, Float> answer : answers) {
+                
+                if (answer == null) {
+                    System.out.println("answer");
+                }
+                
                 finalAnswer.add(answer.getKey());
             }
 

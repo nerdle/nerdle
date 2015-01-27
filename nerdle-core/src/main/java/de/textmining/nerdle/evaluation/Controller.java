@@ -16,19 +16,24 @@
 
 package de.textmining.nerdle.evaluation;
 
-import de.textmining.nerdle.question.answering.fact.matcher.ExactQuestionFactMatcher;
-import de.textmining.nerdle.question.answering.question.parsing.ClearNLPQuestionParser;
-import de.textmining.nerdle.question.answering.MatchFactQuestionAnswerer;
+import java.util.ArrayList;
+import java.util.List;
+
 import de.textmining.nerdle.database.DBFactProvider;
 import de.textmining.nerdle.database.DBSingleton;
+import de.textmining.nerdle.question.answering.MatchFactQuestionAnswerer;
 import de.textmining.nerdle.question.answering.QuestionAnswerer;
+import de.textmining.nerdle.question.answering.fact.matcher.ExactQuestionFactMatcher;
+import de.textmining.nerdle.question.answering.question.parsing.ClearNLPQuestionParser;
 
 public class Controller {
 
     public static void main(String[] args) throws Exception {
-
         EvaluationConfig evaluationConfig = new EvaluationConfig();
-        evaluationConfig.setLimit(5);
+        evaluationConfig.setLimit(100);
+        List<Topic> topics = new ArrayList<>();
+        topics.add(Topic.SIMPSONS);
+        evaluationConfig.setTopics(topics);
 
         Evaluator evaluator = new Evaluator(evaluationConfig);
 
@@ -36,10 +41,9 @@ public class Controller {
 
         ClearNLPQuestionParser questionParser = new ClearNLPQuestionParser();
         ExactQuestionFactMatcher questionFactMatcher = new ExactQuestionFactMatcher();
-        DBFactProvider factProvider = new DBFactProvider(dbSingleton.getConnections().get("postgres"));
+        DBFactProvider factProvider = new DBFactProvider(dbSingleton.getConnections().get("nerdle_simpsons"));
 
-        QuestionAnswerer questionAnswerer = new MatchFactQuestionAnswerer(questionParser, questionFactMatcher,
-                factProvider);
+        QuestionAnswerer questionAnswerer = new MatchFactQuestionAnswerer(questionParser, questionFactMatcher, factProvider);
 
         evaluator.start(questionAnswerer);
     }

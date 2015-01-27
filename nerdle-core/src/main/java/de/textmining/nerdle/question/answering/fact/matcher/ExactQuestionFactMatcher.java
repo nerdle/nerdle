@@ -21,8 +21,10 @@ import java.util.Map.Entry;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+
 import de.textmining.nerdle.utils.ItemCounter;
 import de.textmining.nerdle.utils.MapSorter;
+
 import org.apache.log4j.Logger;
 
 import de.textmining.nerdle.question.answering.model.NerdleFact;
@@ -34,6 +36,8 @@ public class ExactQuestionFactMatcher implements FactMatcher {
 
     @Override
     public SortedSet<Entry<String, Float>> getAnswers(FactProvider factProvider, List<NerdleFact> questionDesciption) {
+
+        SortedSet<Entry<String, Float>> sortedAnswers = new TreeSet<>();
 
         if (questionDesciption.size() == 1) {
             NerdleFact nerdleFact = questionDesciption.get(0);
@@ -51,13 +55,12 @@ public class ExactQuestionFactMatcher implements FactMatcher {
                 answerScore.put(answer, 1f);
             }
 
-            SortedSet<Entry<String, Float>> sortedAnswers = MapSorter.sortByValueDesc(answerScore.getAll());
+            sortedAnswers = MapSorter.sortByValueDesc(answerScore.getAll());
 
             return sortedAnswers;
         }
 
-
-        return null;
+        return sortedAnswers;
 
     }
 }

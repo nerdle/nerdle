@@ -42,19 +42,18 @@ public class EvaluationEntry {
     }
 
     public EvaluationEntry(String[] entry) {
-        System.out.println(entry.length);
-        if (entry.length != 7) {
-            throw new IllegalArgumentException("Entry must have 7 fields.");
+        if (entry.length != 9) {
+            throw new IllegalArgumentException("Entry must have 9 fields.");
         }
-        this.qid = "";
-        this.type = "";
-        this.question = entry[0];
-        this.answerChoices.add(entry[1]);
-        this.answerChoices.add(entry[2]);
+        this.qid = entry[0];
+        this.type = entry[1];
+        this.question = entry[2];
         this.answerChoices.add(entry[3]);
         this.answerChoices.add(entry[4]);
-        this.answer = entry[5];
-        this.source = entry[6];
+        this.answerChoices.add(entry[5]);
+        this.answerChoices.add(entry[6]);
+        this.answer = entry[7];
+        this.source = entry[8];
     }
 
     public String getQid() {
@@ -104,6 +103,5 @@ public class EvaluationEntry {
     public void setAnswerChoices(Set<String> answerChoices) {
         this.answerChoices = answerChoices;
     }
-
 
 }
