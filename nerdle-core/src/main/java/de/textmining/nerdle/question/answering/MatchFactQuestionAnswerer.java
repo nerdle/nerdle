@@ -64,17 +64,9 @@ public class MatchFactQuestionAnswerer implements QuestionAnswerer {
             // The questionFactMatcher then matches this question against a data
             // source as given by the factProvider
             SortedSet<Map.Entry<String, Float>> answers = questionFactMatcher.getAnswers(factProvider, questionDesciption);
-            
-            if (answers == null) {
-                System.out.println("answers");
-            }
-            
+
             for (Map.Entry<String, Float> answer : answers) {
-                
-                if (answer == null) {
-                    System.out.println("answer");
-                }
-                
+
                 finalAnswer.add(answer.getKey());
             }
 

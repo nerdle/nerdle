@@ -38,9 +38,9 @@ public class Evaluator {
     }
 
     public void start(QuestionAnswerer questionAnswerer) throws URISyntaxException, FileNotFoundException {
-        
+
         ClearNLPHelper.INSTANCE.getClass();
-        
+
         System.out.println("QA Evaluaton Framework Results");
         System.out.println("==============================");
         System.out.println();
@@ -57,11 +57,9 @@ public class Evaluator {
             int noAnswers = 0;
 
             String filename = evaluationConfig.getTopicResourceMap().get(topic);
-            System.out.println("filename = " + filename);
 
             if (filename != null) {
                 EvaluationSet evaluationSet = new EvaluationSet(topic, new FileInputStream(filename));
-                System.out.println("evaluationSet = " + evaluationSet);
 
                 int index = 0;
                 for (EvaluationEntry evaluationEntry : evaluationSet.getEvaluationSet()) {
@@ -73,11 +71,8 @@ public class Evaluator {
                     // increment
                     questions++;
 
-                    System.out.println("Q: " + evaluationEntry.getQuestion());
                     Question question = new Question(evaluationEntry.getQuestion());
                     Answer answerToEvaluate = questionAnswerer.answer(question);
-
-                    System.out.println("Found answer: " + answerToEvaluate.getAnswers());
 
                     if (answerToEvaluate.getAnswers().size() > 0) {
                         BooleanJudgment judgment = (BooleanJudgment) booleanAnswerEvaluator.evaluate(answerToEvaluate, evaluationEntry);

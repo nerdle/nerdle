@@ -108,14 +108,6 @@ public class DBFactProvider implements FactProvider {
                     if (stringMatcher.argumentAndLabelMatch(questionsArgs, answerArg))
                         foundArg = true;
                     
-                    if (answerArg == null) {
-                        System.out.println("answerArg");
-                    }
-                    
-                    if (searchArg == null) {
-                        System.out.println("searchArg");
-                    }
-                    
                     if (answerArg.getArgLabel().equals(searchArg.getArgLabel()))
                         foundSearchArg = true;
 
