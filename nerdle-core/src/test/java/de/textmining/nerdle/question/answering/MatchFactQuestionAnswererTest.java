@@ -1,8 +1,8 @@
 package de.textmining.nerdle.question.answering;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-import java.io.File;
+import java.nio.file.Paths;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -13,15 +13,16 @@ import de.textmining.nerdle.question.answering.fact.matcher.ExactQuestionFactMat
 import de.textmining.nerdle.question.answering.model.Answer;
 import de.textmining.nerdle.question.answering.model.Question;
 import de.textmining.nerdle.question.answering.question.parsing.ClearNLPQuestionParser;
-import de.textmining.nerdle.utils.ResourceManager;
 
 public class MatchFactQuestionAnswererTest {
 
     private static QuestionAnswerer questionAnswerer;
 
     @BeforeClass
-    public static void setup() {
-        DBSingleton dbSingleton = new DBSingleton(ResourceManager.getResourcePath(File.separator + "nerdle_test_config.properties"));
+    public static void setup() throws Exception {
+        DBSingleton dbSingleton = new DBSingleton(Paths.get(MatchFactQuestionAnswererTest.class.getResource("/nerdle_test_config.properties").toURI()).toFile()
+                .getPath());
+
         ClearNLPQuestionParser questionParser = new ClearNLPQuestionParser();
         ExactQuestionFactMatcher questionFactMatcher = new ExactQuestionFactMatcher();
         DBFactProvider factProvider = new DBFactProvider(dbSingleton.getConnections().get("nerdle_test"));

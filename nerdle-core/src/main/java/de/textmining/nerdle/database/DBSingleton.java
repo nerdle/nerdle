@@ -16,13 +16,12 @@
 
 package de.textmining.nerdle.database;
 
-import java.io.File;
+import java.net.URISyntaxException;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
-
-import de.textmining.nerdle.utils.ResourceManager;
 
 public class DBSingleton {
 
@@ -51,8 +50,8 @@ public class DBSingleton {
 
     public DBSingleton() {
         try {
-            PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration(ResourceManager.getResourcePath(File.separator
-                    + "nerdle_config.properties"));
+            PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration(Paths
+                    .get(getClass().getResource("/nerdle_config.properties").toURI()).toFile().getPath());
 
             String base_url = propertiesConfiguration.getString("db.base_url");
             String user = propertiesConfiguration.getString("db.user");
@@ -67,6 +66,8 @@ public class DBSingleton {
             }
 
         } catch (ConfigurationException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
     }
