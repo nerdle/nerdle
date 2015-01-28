@@ -44,7 +44,7 @@ _Nerdle_ is now installed in your local maven repository.
 
 Use a question answering system to answer natural language questions. Lets take a simple example for how to use the system.
 
-Using `NerdleAnswerer` and a `FactProvider` you can now pose natural language questions to the system. The system can run on two different `FactProviders`. You can use either a rational database (`DBFactProvider`) over jdbc or the in-memory graph database `Tinkerpop`.
+Using `NerdleAnswerer` and a `FactProvider` you can now pose natural language questions to the system. The system can run on a rational database (`DBFactProvider`) over jdbc.
 
 * DBFactProvider
 
@@ -64,43 +64,20 @@ public class MyNerdle {
 }
 ```
 
-* TinkerpopFactProvider
-
-```java
-public class MyNerdle {
-
-    public static void main(String[] args) throws Exception {
-        String topic = "nerdle_test";
-        Graph graph = TinkerpopGraphSingleton.getInstance().getGraphs().get(topic);
-        FactProvider factProvider = new TinkerpopFactProvider(graph);
-        NerdleAnswerer nerdleAnswerer = new NerdleAnswerer();
-        nerdleAnswerer.getAnswers(factProvider, "Who is funny?", 1);
-
-        TinkerpopGraphSingleton.getInstance().shutdown();
-    }
-
-}
-```
-
 For each _topic_ you have to provide a `FactProvider` using the `nerdle_config.properties` file. To create the file use the `nerdle_config_template.properties`. Put this file in `src/main/resources/nerdle_config.properties`.
 
 ```data
-# TINKERPOP, DB
-factprovider=DB
 
-# TINKERPOP properties
-tinkerpop.basePath=/path/to/graphs
-tinkerpop.graphs=simpsons
-tinkerpop.graphs=star-trek
-tinkerpop.graphs=wookieepedia
+# H2 database configuration
 
-# DB properties
-db.base_url=jdbc:postgresql://localhost/
-db.user=user_name
-db.password=password
-db.databases=nerdle_simpsons
-db.databases=nerdle_star-trek
-db.databases=nerdle_star-wars
+jdbc=jdbc:h2:
+db.db1.name=simpsons
+db.db1.path=/path/to/db
+db.db2.name=star-trek
+db.db2.path=/path/to/db
+db.db3.name=star-wars
+db.db3.path=/path/to/db
+
 ```
 
 For junits tests the `src/test/resources/nerdle_test_config.properties` file is used.
