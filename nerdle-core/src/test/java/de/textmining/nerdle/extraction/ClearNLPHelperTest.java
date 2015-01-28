@@ -34,4 +34,5 @@ public class ClearNLPHelperTest {
         List<NerdleFact> extractFactsFromSentence = instance.extractFactsFromSentence(sentence, "source");
         assertTrue(extractFactsFromSentence.size() > 0);
     }
+
 }

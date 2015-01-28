@@ -88,6 +88,14 @@
 			<version>9.1-901.jdbc4</version>
 		</dependency>
 
+		<!-- H2 -->
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.185</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -124,7 +132,7 @@
 						</goals>
 						<configuration>
 							<outputFile>
-								${project.build.directory}/${project.artifactId}-${project.version}-job.jar
+								${project.build.directory}/${project.artifactId}-${project.version}-withDependencies.jar
 							</outputFile>
 						</configuration>
 					</execution>

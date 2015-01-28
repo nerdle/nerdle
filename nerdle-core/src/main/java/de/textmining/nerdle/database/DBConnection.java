@@ -36,6 +36,14 @@ public class DBConnection {
         }
     }
 
+    public DBConnection(String url) {
+        try {
+            connection = DriverManager.getConnection(url);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public Connection getConnection() {
         return connection;
     }

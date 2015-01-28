@@ -26,7 +26,7 @@ public class EvaluatorTest {
     @Test
     public void test() throws Exception {
         EvaluationConfig evaluationConfig = new EvaluationConfig();
-        
+
         Evaluator evaluator = new Evaluator(evaluationConfig);
 
         QuestionAnswerer questionAnswerer = new DummyQuestionAnswerer();

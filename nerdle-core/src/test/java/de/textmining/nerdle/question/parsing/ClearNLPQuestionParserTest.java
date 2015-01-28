@@ -43,11 +43,6 @@ public class ClearNLPQuestionParserTest {
     }
 
     @Test
-    public void test() throws Exception {
-
-    }
-
-    @Test
     public void testWho() throws Exception {
         Question question = new Question("Who is Homer’s father?");
 
@@ -73,15 +68,8 @@ public class ClearNLPQuestionParserTest {
     @Test
     public void testNoQuestionArg() throws Exception {
         Question question = new Question("Which one has devoted her life to celibacy?");
-
         List<NerdleFact> analyzedQuestions = questionParser.analyzeQuestion(question);
-
         assertEquals(0, analyzedQuestions.size());
-
-        // NerdleFact analyzedQuestion = analyzedQuestions.get(0);
-
-        // question argument
-        // assertEquals(null, analyzedQuestion.getQuestionArg());
     }
 
 }

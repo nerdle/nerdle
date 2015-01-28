@@ -30,7 +30,7 @@ public class Controller {
 
     public static void main(String[] args) throws Exception {
         EvaluationConfig evaluationConfig = new EvaluationConfig();
-        evaluationConfig.setLimit(100);
+        evaluationConfig.setLimit(1);
         List<Topic> topics = new ArrayList<>();
         topics.add(Topic.SIMPSONS);
         evaluationConfig.setTopics(topics);
@@ -41,7 +41,7 @@ public class Controller {
 
         ClearNLPQuestionParser questionParser = new ClearNLPQuestionParser();
         ExactQuestionFactMatcher questionFactMatcher = new ExactQuestionFactMatcher();
-        DBFactProvider factProvider = new DBFactProvider(dbSingleton.getConnections().get("nerdle_simpsons"));
+        DBFactProvider factProvider = new DBFactProvider(dbSingleton.getConnections().get("simpsons"));
 
         QuestionAnswerer questionAnswerer = new MatchFactQuestionAnswerer(questionParser, questionFactMatcher, factProvider);
 

@@ -19,6 +19,9 @@ package de.textmining.nerdle.database;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
@@ -29,19 +32,7 @@ public class DBSingleton {
 
     public DBSingleton(String path) {
         try {
-            PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration(path);
-
-            String base_url = propertiesConfiguration.getString("db.base_url");
-            String user = propertiesConfiguration.getString("db.user");
-            String password = propertiesConfiguration.getString("db.password");
-            String[] databases = propertiesConfiguration.getStringArray("db.databases");
-
-            connections = new HashMap<>();
-
-            for (String database : databases) {
-                String url = base_url + database;
-                connections.put(database, new DBConnection(url, user, password));
-            }
+            config(path);
 
         } catch (ConfigurationException e) {
             e.printStackTrace();
@@ -50,26 +41,37 @@ public class DBSingleton {
 
     public DBSingleton() {
         try {
-            PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration(Paths
-                    .get(getClass().getResource("/nerdle_config.properties").toURI()).toFile().getPath());
-
-            String base_url = propertiesConfiguration.getString("db.base_url");
-            String user = propertiesConfiguration.getString("db.user");
-            String password = propertiesConfiguration.getString("db.password");
-            String[] databases = propertiesConfiguration.getStringArray("db.databases");
-
-            connections = new HashMap<>();
-
-            for (String database : databases) {
-                String url = base_url + database;
-                connections.put(database, new DBConnection(url, user, password));
-            }
-
+            config(Paths.get(getClass().getResource("/nerdle_config.properties").toURI()).toFile().getPath());
         } catch (ConfigurationException e) {
             e.printStackTrace();
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }
+    }
+
+    private void config(String path) throws ConfigurationException {
+        PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration(path);
+
+        String jdbc = propertiesConfiguration.getString("jdbc");
+
+        Set<String> dbIds = new TreeSet<>();
+
+        Iterator keys = propertiesConfiguration.getKeys("db");
+
+        while (keys.hasNext()) {
+            String key = (String) keys.next();
+            String[] split = key.split("\\.");
+            dbIds.add(split[0] + "." + split[1]);
+        }
+
+        connections = new HashMap<>();
+
+        for (String dbId : dbIds) {
+            String dbName = propertiesConfiguration.getString(dbId + "." + "name");
+            String dbPath = propertiesConfiguration.getString(dbId + "." + "path");
+            connections.put(dbName, new DBConnection(jdbc + dbPath));
+        }
+
     }
 
     public HashMap<String, DBConnection> getConnections() {
@@ -78,6 +80,10 @@ public class DBSingleton {
 
     public void setConnections(HashMap<String, DBConnection> connections) {
         this.connections = connections;
+    }
+
+    public static void main(String[] args) {
+        new DBSingleton();
     }
 
 }

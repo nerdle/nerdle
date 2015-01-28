@@ -18,7 +18,6 @@ package de.textmining.nerdle.question.answering.fact.matcher;
 
 import static org.junit.Assert.assertEquals;
 
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.SortedSet;
@@ -26,9 +25,8 @@ import java.util.SortedSet;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import de.textmining.nerdle.TestDBConnection;
 import de.textmining.nerdle.database.DBFactProvider;
-import de.textmining.nerdle.database.DBSingleton;
-import de.textmining.nerdle.question.answering.MatchFactQuestionAnswererTest;
 import de.textmining.nerdle.question.answering.model.NerdleFact;
 import de.textmining.nerdle.question.answering.model.Question;
 import de.textmining.nerdle.question.answering.question.parsing.ClearNLPQuestionParser;
@@ -41,10 +39,8 @@ public class ExactQuestionFactMatcherTest {
 
     @BeforeClass
     public static void setup() throws Exception {
-        DBSingleton dbSingleton = new DBSingleton(Paths.get(MatchFactQuestionAnswererTest.class.getResource("/nerdle_test_config.properties").toURI()).toFile()
-                .getPath());
         questionParser = new ClearNLPQuestionParser();
-        factProvider = new DBFactProvider(dbSingleton.getConnections().get("nerdle_test"));
+        factProvider = new DBFactProvider(TestDBConnection.small());
         questionFactMatcher = new ExactQuestionFactMatcher();
     }
 
