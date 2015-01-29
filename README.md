@@ -67,7 +67,6 @@ public class MyNerdle {
 For each _topic_ you have to provide a `FactProvider` using the `nerdle_config.properties` file. To create the file use the `nerdle_config_template.properties`. Put this file in `src/main/resources/nerdle_config.properties`.
 
 ```data
-
 # H2 database configuration
 
 jdbc=jdbc:h2:
@@ -77,7 +76,6 @@ db.db2.name=star-trek
 db.db2.path=/path/to/db
 db.db3.name=star-wars
 db.db3.path=/path/to/db
-
 ```
 
 For junits tests the `src/test/resources/nerdle_test_config.properties` file is used.
