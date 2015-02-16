@@ -16,15 +16,14 @@
 
 package de.textmining.nerdle.evaluation;
 
-import de.textmining.nerdle.evaluation.metrics.JaccardMetric;
-import de.textmining.nerdle.information.extraction.ClearNLPHelper;
-import de.textmining.nerdle.question.answering.QuestionAnswerer;
-import de.textmining.nerdle.question.answering.model.Answer;
-import de.textmining.nerdle.question.answering.model.Question;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
+
+import de.textmining.nerdle.evaluation.metrics.JaccardMetric;
+import de.textmining.nerdle.information.extraction.ClearNLPHelper;
+import de.textmining.nerdle.question.answering.model.Answer;
+import de.textmining.nerdle.question.answering.model.Question;
 
 public class Evaluator {
 
@@ -37,7 +36,7 @@ public class Evaluator {
         this.booleanAnswerEvaluator = new BooleanAnswerEvaluator(new JaccardMetric());
     }
 
-    public void start(QuestionAnswerer questionAnswerer) throws URISyntaxException, FileNotFoundException {
+    public void start() throws URISyntaxException, FileNotFoundException {
 
         ClearNLPHelper.INSTANCE.getClass();
 
@@ -49,7 +48,7 @@ public class Evaluator {
 
         for (Topic topic : evaluationConfig.getTopics()) {
 
-            System.out.println("topic = " + topic);
+            System.out.println("Topic = " + topic);
             int questions = 0;
 
             int correctAnswers = 0;
@@ -72,7 +71,10 @@ public class Evaluator {
                     questions++;
 
                     Question question = new Question(evaluationEntry.getQuestion());
-                    Answer answerToEvaluate = questionAnswerer.answer(question);
+
+                    System.out.println("Question: " + question.getQuestion());
+
+                    Answer answerToEvaluate = evaluationConfig.getTopicQuestionAnswererMap().get(topic).answer(question);
 
                     if (answerToEvaluate.getAnswers().size() > 0) {
                         BooleanJudgment judgment = (BooleanJudgment) booleanAnswerEvaluator.evaluate(answerToEvaluate, evaluationEntry);
@@ -96,6 +98,7 @@ public class Evaluator {
             }
 
             // print results
+            System.out.println();
             System.out.println("Topic: " + topic);
             System.out.println(String.format("%-20s%10s", "Total questions:", questions));
             System.out.println(String.format("%-20s%10s", "Correct Answers:", correctAnswers));

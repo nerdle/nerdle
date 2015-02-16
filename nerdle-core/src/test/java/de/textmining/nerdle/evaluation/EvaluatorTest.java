@@ -16,6 +16,13 @@
 
 package de.textmining.nerdle.evaluation;
 
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.Test;
 
 import de.textmining.nerdle.question.answering.DummyQuestionAnswerer;
@@ -25,12 +32,30 @@ public class EvaluatorTest {
 
     @Test
     public void test() throws Exception {
-        EvaluationConfig evaluationConfig = new EvaluationConfig();
+        List<Topic> topics = new ArrayList<>();
+        topics.addAll(Arrays.asList(Topic.values()));
+
+        List<QuestionType> questionsTypes = new ArrayList<>();
+        questionsTypes.addAll(Arrays.asList(QuestionType.values()));
+
+        Map<Topic, String> topicResourceMap = new HashMap<>();
+
+        topicResourceMap.put(Topic.SIMPSONS, Paths.get(getClass().getResource("/simpsons.tsv").toURI()).toFile().getPath());
+        topicResourceMap.put(Topic.STAR_TREK, Paths.get(getClass().getResource("/star-trek.tsv").toURI()).toFile().getPath());
+        topicResourceMap.put(Topic.STAR_WARS, Paths.get(getClass().getResource("/star-wars.tsv").toURI()).toFile().getPath());
+
+        QuestionAnswerer questionAnswerer = new DummyQuestionAnswerer();
+
+        Map<Topic, QuestionAnswerer> topicQuestionAnswererMap = new HashMap<>();
+        topicQuestionAnswererMap.put(Topic.SIMPSONS, questionAnswerer);
+        topicQuestionAnswererMap.put(Topic.STAR_TREK, questionAnswerer);
+        topicQuestionAnswererMap.put(Topic.STAR_WARS, questionAnswerer);
+
+        EvaluationConfig evaluationConfig = new EvaluationConfig(topics, questionsTypes, topicResourceMap, topicQuestionAnswererMap, 10);
 
         Evaluator evaluator = new Evaluator(evaluationConfig);
 
-        QuestionAnswerer questionAnswerer = new DummyQuestionAnswerer();
-        evaluator.start(questionAnswerer);
+        evaluator.start();
     }
 
 }

@@ -16,8 +16,12 @@
 
 package de.textmining.nerdle.evaluation;
 
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.textmining.nerdle.database.DBFactProvider;
 import de.textmining.nerdle.database.DBSingleton;
@@ -29,23 +33,41 @@ import de.textmining.nerdle.question.answering.question.parsing.ClearNLPQuestion
 public class Controller {
 
     public static void main(String[] args) throws Exception {
-        EvaluationConfig evaluationConfig = new EvaluationConfig();
-        evaluationConfig.setLimit(1);
         List<Topic> topics = new ArrayList<>();
         topics.add(Topic.SIMPSONS);
-        evaluationConfig.setTopics(topics);
+//        topics.add(Topic.STAR_TREK);
+//        topics.add(Topic.STAR_WARS);
 
-        Evaluator evaluator = new Evaluator(evaluationConfig);
+        List<QuestionType> questionsTypes = new ArrayList<>();
+        questionsTypes.addAll(Arrays.asList(QuestionType.values()));
+
+        Map<Topic, String> topicResourceMap = new HashMap<>();
+
+        topicResourceMap.put(Topic.SIMPSONS, Paths.get(Controller.class.getResource("/simpsons.tsv").toURI()).toFile().getPath());
+        // topicResourceMap.put(Topic.STAR_TREK,
+        // Paths.get(Controller.class.getResource("/star-trek.tsv").toURI()).toFile().getPath());
+        // topicResourceMap.put(Topic.STAR_WARS,
+        // Paths.get(Controller.class.getResource("/star-wars.tsv").toURI()).toFile().getPath());
 
         DBSingleton dbSingleton = new DBSingleton();
 
         ClearNLPQuestionParser questionParser = new ClearNLPQuestionParser();
         ExactQuestionFactMatcher questionFactMatcher = new ExactQuestionFactMatcher();
+
         DBFactProvider factProvider = new DBFactProvider(dbSingleton.getConnections().get("simpsons"));
 
         QuestionAnswerer questionAnswerer = new MatchFactQuestionAnswerer(questionParser, questionFactMatcher, factProvider);
 
-        evaluator.start(questionAnswerer);
+        Map<Topic, QuestionAnswerer> topicQuestionAnswererMap = new HashMap<>();
+        topicQuestionAnswererMap.put(Topic.SIMPSONS, questionAnswerer);
+        // topicQuestionAnswererMap.put(Topic.STAR_TREK, questionAnswerer);
+        // topicQuestionAnswererMap.put(Topic.STAR_WARS, questionAnswerer);
+
+        EvaluationConfig evaluationConfig = new EvaluationConfig(topics, questionsTypes, topicResourceMap, topicQuestionAnswererMap, 1);
+
+        Evaluator evaluator = new Evaluator(evaluationConfig);
+
+        evaluator.start();
     }
 
 }

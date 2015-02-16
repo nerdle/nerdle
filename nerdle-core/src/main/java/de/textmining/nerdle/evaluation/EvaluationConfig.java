@@ -18,7 +18,13 @@ package de.textmining.nerdle.evaluation;
 
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import de.textmining.nerdle.question.answering.QuestionAnswerer;
 
 public class EvaluationConfig {
 
@@ -38,30 +44,22 @@ public class EvaluationConfig {
     private Map<Topic, String> topicResourceMap;
 
     /**
+     * The resources of the topics.
+     */
+    private Map<Topic, QuestionAnswerer> topicQuestionAnswererMap;
+
+    /**
      * The limit of questions used during the evaluation.
      */
     private int limit = -1;
 
-    public EvaluationConfig() throws URISyntaxException {
-        super();
-        this.topics = new ArrayList<>();
-        this.topics.addAll(Arrays.asList(Topic.values()));
-
-        this.questionsTypes = new ArrayList<>();
-        this.questionsTypes.addAll(Arrays.asList(QuestionType.values()));
-
-        this.topicResourceMap = new HashMap<Topic, String>();
-
-        this.topicResourceMap.put(Topic.SIMPSONS, Paths.get(getClass().getResource("/simpsons.tsv").toURI()).toFile().getPath());
-        this.topicResourceMap.put(Topic.STAR_TREK, Paths.get(getClass().getResource("/star-trek.tsv").toURI()).toFile().getPath());
-        this.topicResourceMap.put(Topic.STAR_WARS, Paths.get(getClass().getResource("/star-wars.tsv").toURI()).toFile().getPath());
-    }
-
-    public EvaluationConfig(List<Topic> topics, List<QuestionType> questionsTypes, Map<Topic, String> topicResourceMap, int limit) {
+    public EvaluationConfig(List<Topic> topics, List<QuestionType> questionsTypes, Map<Topic, String> topicResourceMap,
+            Map<Topic, QuestionAnswerer> topicQuestionAnswererMap, int limit) {
         super();
         this.topics = topics;
         this.questionsTypes = questionsTypes;
         this.topicResourceMap = topicResourceMap;
+        this.topicQuestionAnswererMap = topicQuestionAnswererMap;
         this.limit = limit;
     }
 
@@ -87,6 +85,14 @@ public class EvaluationConfig {
 
     public void setTopicResourceMap(Map<Topic, String> topicResourceMap) {
         this.topicResourceMap = topicResourceMap;
+    }
+
+    public Map<Topic, QuestionAnswerer> getTopicQuestionAnswererMap() {
+        return topicQuestionAnswererMap;
+    }
+
+    public void setTopicQuestionAnswererMap(Map<Topic, QuestionAnswerer> topicQuestionAnswererMap) {
+        this.topicQuestionAnswererMap = topicQuestionAnswererMap;
     }
 
     public int getLimit() {
