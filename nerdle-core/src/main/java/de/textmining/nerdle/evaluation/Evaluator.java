@@ -16,7 +16,6 @@
 
 package de.textmining.nerdle.evaluation;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 
@@ -55,10 +54,9 @@ public class Evaluator {
             int incorrectAnswers = 0;
             int noAnswers = 0;
 
-            String filename = evaluationConfig.getTopicResourceMap().get(topic);
+            EvaluationSet evaluationSet = evaluationConfig.getTopicEvaluationSetMap().get(topic);
 
-            if (filename != null) {
-                EvaluationSet evaluationSet = new EvaluationSet(topic, new FileInputStream(filename));
+            if (evaluationSet != null) {
 
                 int index = 0;
                 for (EvaluationEntry evaluationEntry : evaluationSet.getEvaluationSet()) {

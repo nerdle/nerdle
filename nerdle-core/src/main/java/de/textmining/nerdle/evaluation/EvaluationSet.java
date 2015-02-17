@@ -26,22 +26,17 @@ import java.util.List;
 
 public class EvaluationSet {
 
-    private Topic topic;
     private List<EvaluationEntry> evaluationSet;
 
     public EvaluationSet() {
-        super();
         evaluationSet = new ArrayList<>();
     }
 
-    public EvaluationSet(Topic topic, List<EvaluationEntry> evaluationSet) {
-        super();
-        this.topic = topic;
+    public EvaluationSet(List<EvaluationEntry> evaluationSet) {
         this.evaluationSet = evaluationSet;
     }
 
-    public EvaluationSet(Topic topic, InputStream in) {
-        this.topic = topic;
+    public EvaluationSet(InputStream in) {
         this.evaluationSet = new ArrayList<>();
 
         try {
@@ -61,14 +56,6 @@ public class EvaluationSet {
             e.printStackTrace();
         }
 
-    }
-
-    public Topic getTopic() {
-        return topic;
-    }
-
-    public void setTopic(Topic topic) {
-        this.topic = topic;
     }
 
     public List<EvaluationEntry> getEvaluationSet() {

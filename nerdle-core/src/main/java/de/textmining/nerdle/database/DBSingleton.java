@@ -51,7 +51,7 @@ public class DBSingleton {
 
     private void config(String path) throws ConfigurationException {
         PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration(path);
-
+        
         String jdbc = propertiesConfiguration.getString("jdbc");
 
         Set<String> dbIds = new TreeSet<>();

@@ -16,11 +16,6 @@
 
 package de.textmining.nerdle.evaluation;
 
-import java.net.URISyntaxException;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -39,12 +34,12 @@ public class EvaluationConfig {
     private List<QuestionType> questionsTypes;
 
     /**
-     * The resources of the topics.
+     * The evaluation sets of the topics.
      */
-    private Map<Topic, String> topicResourceMap;
+    private Map<Topic, EvaluationSet> topicEvaluationSetMap;
 
     /**
-     * The resources of the topics.
+     * The question answers of the topics.
      */
     private Map<Topic, QuestionAnswerer> topicQuestionAnswererMap;
 
@@ -53,12 +48,12 @@ public class EvaluationConfig {
      */
     private int limit = -1;
 
-    public EvaluationConfig(List<Topic> topics, List<QuestionType> questionsTypes, Map<Topic, String> topicResourceMap,
+    public EvaluationConfig(List<Topic> topics, List<QuestionType> questionsTypes, Map<Topic, EvaluationSet> topicEvaluationSetMap,
             Map<Topic, QuestionAnswerer> topicQuestionAnswererMap, int limit) {
         super();
         this.topics = topics;
         this.questionsTypes = questionsTypes;
-        this.topicResourceMap = topicResourceMap;
+        this.topicEvaluationSetMap = topicEvaluationSetMap;
         this.topicQuestionAnswererMap = topicQuestionAnswererMap;
         this.limit = limit;
     }
@@ -79,12 +74,12 @@ public class EvaluationConfig {
         this.questionsTypes = questionsTypes;
     }
 
-    public Map<Topic, String> getTopicResourceMap() {
-        return topicResourceMap;
+    public Map<Topic, EvaluationSet> getTopicEvaluationSetMap() {
+        return topicEvaluationSetMap;
     }
 
-    public void setTopicResourceMap(Map<Topic, String> topicResourceMap) {
-        this.topicResourceMap = topicResourceMap;
+    public void setTopicEvaluationSetMap(Map<Topic, EvaluationSet> topicEvaluationSetMap) {
+        this.topicEvaluationSetMap = topicEvaluationSetMap;
     }
 
     public Map<Topic, QuestionAnswerer> getTopicQuestionAnswererMap() {

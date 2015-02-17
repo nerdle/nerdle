@@ -16,7 +16,6 @@
 
 package de.textmining.nerdle.evaluation;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -38,11 +37,11 @@ public class EvaluatorTest {
         List<QuestionType> questionsTypes = new ArrayList<>();
         questionsTypes.addAll(Arrays.asList(QuestionType.values()));
 
-        Map<Topic, String> topicResourceMap = new HashMap<>();
+        Map<Topic, EvaluationSet> topicResourceMap = new HashMap<>();
 
-        topicResourceMap.put(Topic.SIMPSONS, Paths.get(getClass().getResource("/simpsons.tsv").toURI()).toFile().getPath());
-        topicResourceMap.put(Topic.STAR_TREK, Paths.get(getClass().getResource("/star-trek.tsv").toURI()).toFile().getPath());
-        topicResourceMap.put(Topic.STAR_WARS, Paths.get(getClass().getResource("/star-wars.tsv").toURI()).toFile().getPath());
+        topicResourceMap.put(Topic.SIMPSONS, new EvaluationSet(Controller.class.getResourceAsStream("/simpsons.tsv")));
+        topicResourceMap.put(Topic.STAR_TREK, new EvaluationSet(Controller.class.getResourceAsStream("/star-trek.tsv")));
+        topicResourceMap.put(Topic.STAR_WARS, new EvaluationSet(Controller.class.getResourceAsStream("/star-wars.tsv")));
 
         QuestionAnswerer questionAnswerer = new DummyQuestionAnswerer();
 

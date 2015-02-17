@@ -16,7 +16,6 @@
 
 package de.textmining.nerdle.evaluation;
 
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -33,37 +32,43 @@ import de.textmining.nerdle.question.answering.question.parsing.ClearNLPQuestion
 public class Controller {
 
     public static void main(String[] args) throws Exception {
+
+        if (args.length != 1) {
+            System.err.println("Usage: nerdle_config");
+            System.err.println("nerdle_config: path to nerdle_config.properties file");
+        }
+
+        String nerdleConfigPath = args[0];
+
         List<Topic> topics = new ArrayList<>();
         topics.add(Topic.SIMPSONS);
-//        topics.add(Topic.STAR_TREK);
-//        topics.add(Topic.STAR_WARS);
+        topics.add(Topic.STAR_TREK);
+        topics.add(Topic.STAR_WARS);
 
         List<QuestionType> questionsTypes = new ArrayList<>();
         questionsTypes.addAll(Arrays.asList(QuestionType.values()));
 
-        Map<Topic, String> topicResourceMap = new HashMap<>();
+        Map<Topic, EvaluationSet> topicResourceMap = new HashMap<>();
 
-        topicResourceMap.put(Topic.SIMPSONS, Paths.get(Controller.class.getResource("/simpsons.tsv").toURI()).toFile().getPath());
-        // topicResourceMap.put(Topic.STAR_TREK,
-        // Paths.get(Controller.class.getResource("/star-trek.tsv").toURI()).toFile().getPath());
-        // topicResourceMap.put(Topic.STAR_WARS,
-        // Paths.get(Controller.class.getResource("/star-wars.tsv").toURI()).toFile().getPath());
+        topicResourceMap.put(Topic.SIMPSONS, new EvaluationSet(Controller.class.getResourceAsStream("/simpsons.tsv")));
+        topicResourceMap.put(Topic.STAR_TREK, new EvaluationSet(Controller.class.getResourceAsStream("/star-trek.tsv")));
+        topicResourceMap.put(Topic.STAR_WARS, new EvaluationSet(Controller.class.getResourceAsStream("/star-wars.tsv")));
 
-        DBSingleton dbSingleton = new DBSingleton();
+        DBSingleton dbSingleton = new DBSingleton(nerdleConfigPath);
 
         ClearNLPQuestionParser questionParser = new ClearNLPQuestionParser();
         ExactQuestionFactMatcher questionFactMatcher = new ExactQuestionFactMatcher();
 
-        DBFactProvider factProvider = new DBFactProvider(dbSingleton.getConnections().get("simpsons"));
-
-        QuestionAnswerer questionAnswerer = new MatchFactQuestionAnswerer(questionParser, questionFactMatcher, factProvider);
+        DBFactProvider simpsonsFactProvider = new DBFactProvider(dbSingleton.getConnections().get("simpsons"));
+        DBFactProvider startrekFactProvider = new DBFactProvider(dbSingleton.getConnections().get("star-trek"));
+        DBFactProvider starwarsFactProvider = new DBFactProvider(dbSingleton.getConnections().get("star-wars"));
 
         Map<Topic, QuestionAnswerer> topicQuestionAnswererMap = new HashMap<>();
-        topicQuestionAnswererMap.put(Topic.SIMPSONS, questionAnswerer);
-        // topicQuestionAnswererMap.put(Topic.STAR_TREK, questionAnswerer);
-        // topicQuestionAnswererMap.put(Topic.STAR_WARS, questionAnswerer);
+        topicQuestionAnswererMap.put(Topic.SIMPSONS, new MatchFactQuestionAnswerer(questionParser, questionFactMatcher, simpsonsFactProvider));
+        topicQuestionAnswererMap.put(Topic.STAR_TREK, new MatchFactQuestionAnswerer(questionParser, questionFactMatcher, startrekFactProvider));
+        topicQuestionAnswererMap.put(Topic.STAR_WARS, new MatchFactQuestionAnswerer(questionParser, questionFactMatcher, starwarsFactProvider));
 
-        EvaluationConfig evaluationConfig = new EvaluationConfig(topics, questionsTypes, topicResourceMap, topicQuestionAnswererMap, 1);
+        EvaluationConfig evaluationConfig = new EvaluationConfig(topics, questionsTypes, topicResourceMap, topicQuestionAnswererMap, 5);
 
         Evaluator evaluator = new Evaluator(evaluationConfig);
 
