@@ -33,13 +33,15 @@ public class Controller {
 
     public static void main(String[] args) throws Exception {
 
-        if (args.length != 1) {
+        if (args.length != 2) {
             System.err.println("Usage: nerdle_config");
-            System.err.println("nerdle_config: path to nerdle_config.properties file");
+            System.err.println("nerdle_config: path to nerdle_config.properties file.");
+            System.err.println("limit: the limit of questions used during the evaluation.");
         }
 
         String nerdleConfigPath = args[0];
-
+        int limit = Integer.parseInt(args[1]);
+        
         List<Topic> topics = new ArrayList<>();
         topics.add(Topic.SIMPSONS);
         topics.add(Topic.STAR_TREK);
@@ -68,7 +70,7 @@ public class Controller {
         topicQuestionAnswererMap.put(Topic.STAR_TREK, new MatchFactQuestionAnswerer(questionParser, questionFactMatcher, startrekFactProvider));
         topicQuestionAnswererMap.put(Topic.STAR_WARS, new MatchFactQuestionAnswerer(questionParser, questionFactMatcher, starwarsFactProvider));
 
-        EvaluationConfig evaluationConfig = new EvaluationConfig(topics, questionsTypes, topicResourceMap, topicQuestionAnswererMap, 5);
+        EvaluationConfig evaluationConfig = new EvaluationConfig(topics, questionsTypes, topicResourceMap, topicQuestionAnswererMap, limit);
 
         Evaluator evaluator = new Evaluator(evaluationConfig);
 
