@@ -27,19 +27,26 @@ import org.apache.log4j.Logger;
 import de.textmining.nerdle.information.extraction.ClearNLPHelper;
 import de.textmining.nerdle.question.answering.model.NerdleArg;
 import de.textmining.nerdle.question.answering.model.NerdleFact;
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 
 public class ClearNLPQuestionParser implements QuestionParser {
+
+    private static final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
 
     protected final static Logger log = Logger.getLogger(ClearNLPQuestionParser.class);
 
     @Override
     public List<NerdleFact> analyzeQuestion(Question question) throws InterruptedException, ConfigurationException {
 
+        EtmPoint point = etmMonitor.createPoint("ClearNLPQuestionParser:analyzeQuestion");
+
         log.debug("Handling question: " + question.getQuestion());
 
         List<NerdleFact> questionFacts = ClearNLPHelper.INSTANCE.extractFactsFromSentence(question.getQuestion(), "");
         List<NerdleFact> retFacts = new ArrayList<>();
-        
+
         for (NerdleFact questionFact : questionFacts) {
             for (NerdleArg nerdleArg : questionFact.getArguments()) {
                 if (nerdleArg.getArgLabel().startsWith("R-")) {
@@ -48,6 +55,8 @@ public class ClearNLPQuestionParser implements QuestionParser {
                 }
             }
         }
+        
+        point.collect();
 
         return retFacts;
     }

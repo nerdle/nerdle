@@ -22,13 +22,8 @@ import de.textmining.nerdle.question.answering.model.NerdleArg;
 
 public interface StringMatcher {
 
-    public double distance(String a, String b);
-
     public boolean match(String a, String b);
-
-    public double argumentDistance(List<NerdleArg> arguments, NerdleArg argument);
 
     public boolean argumentAndLabelMatch(List<NerdleArg> arguments, NerdleArg argument);
 
-    public boolean exploreArgumentAndLabelMatch(List<NerdleArg> arguments, NerdleArg argument);
 }

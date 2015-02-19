@@ -26,8 +26,14 @@ import java.util.TreeSet;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
-public class DBSingleton {
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 
+public class DBSingleton {
+    
+    private static final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
+    
     private HashMap<String, DBConnection> connections;
 
     public DBSingleton(String path) {
@@ -50,6 +56,9 @@ public class DBSingleton {
     }
 
     private void config(String path) throws ConfigurationException {
+        
+        EtmPoint point = etmMonitor.createPoint("DBSingleton:config");
+        
         PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration(path);
         
         String jdbc = propertiesConfiguration.getString("jdbc");
@@ -71,6 +80,8 @@ public class DBSingleton {
             String dbPath = propertiesConfiguration.getString(dbId + "." + "path");
             connections.put(dbName, new DBConnection(jdbc + dbPath));
         }
+        
+        point.collect();
 
     }
 

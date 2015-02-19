@@ -28,10 +28,19 @@ import de.textmining.nerdle.question.answering.MatchFactQuestionAnswerer;
 import de.textmining.nerdle.question.answering.QuestionAnswerer;
 import de.textmining.nerdle.question.answering.fact.matcher.ExactQuestionFactMatcher;
 import de.textmining.nerdle.question.answering.question.parsing.ClearNLPQuestionParser;
+import etm.core.configuration.BasicEtmConfigurator;
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.renderer.SimpleTextRenderer;
 
 public class Controller {
 
+    private static EtmMonitor monitor;
+
     public static void main(String[] args) throws Exception {
+
+        // configure measurement framework
+        setup();
 
         if (args.length != 2) {
             System.err.println("Usage: nerdle_config");
@@ -41,11 +50,11 @@ public class Controller {
 
         String nerdleConfigPath = args[0];
         int limit = Integer.parseInt(args[1]);
-        
+
         List<Topic> topics = new ArrayList<>();
         topics.add(Topic.SIMPSONS);
-        topics.add(Topic.STAR_TREK);
-        topics.add(Topic.STAR_WARS);
+//        topics.add(Topic.STAR_TREK);
+//        topics.add(Topic.STAR_WARS);
 
         List<QuestionType> questionsTypes = new ArrayList<>();
         questionsTypes.addAll(Arrays.asList(QuestionType.values()));
@@ -53,8 +62,8 @@ public class Controller {
         Map<Topic, EvaluationSet> topicResourceMap = new HashMap<>();
 
         topicResourceMap.put(Topic.SIMPSONS, new EvaluationSet(Controller.class.getResourceAsStream("/simpsons.tsv")));
-        topicResourceMap.put(Topic.STAR_TREK, new EvaluationSet(Controller.class.getResourceAsStream("/star-trek.tsv")));
-        topicResourceMap.put(Topic.STAR_WARS, new EvaluationSet(Controller.class.getResourceAsStream("/star-wars.tsv")));
+//        topicResourceMap.put(Topic.STAR_TREK, new EvaluationSet(Controller.class.getResourceAsStream("/star-trek.tsv")));
+//        topicResourceMap.put(Topic.STAR_WARS, new EvaluationSet(Controller.class.getResourceAsStream("/star-wars.tsv")));
 
         DBSingleton dbSingleton = new DBSingleton(nerdleConfigPath);
 
@@ -62,19 +71,35 @@ public class Controller {
         ExactQuestionFactMatcher questionFactMatcher = new ExactQuestionFactMatcher();
 
         DBFactProvider simpsonsFactProvider = new DBFactProvider(dbSingleton.getConnections().get("simpsons"));
-        DBFactProvider startrekFactProvider = new DBFactProvider(dbSingleton.getConnections().get("star-trek"));
-        DBFactProvider starwarsFactProvider = new DBFactProvider(dbSingleton.getConnections().get("star-wars"));
+//        DBFactProvider startrekFactProvider = new DBFactProvider(dbSingleton.getConnections().get("star-trek"));
+//        DBFactProvider starwarsFactProvider = new DBFactProvider(dbSingleton.getConnections().get("star-wars"));
 
         Map<Topic, QuestionAnswerer> topicQuestionAnswererMap = new HashMap<>();
         topicQuestionAnswererMap.put(Topic.SIMPSONS, new MatchFactQuestionAnswerer(questionParser, questionFactMatcher, simpsonsFactProvider));
-        topicQuestionAnswererMap.put(Topic.STAR_TREK, new MatchFactQuestionAnswerer(questionParser, questionFactMatcher, startrekFactProvider));
-        topicQuestionAnswererMap.put(Topic.STAR_WARS, new MatchFactQuestionAnswerer(questionParser, questionFactMatcher, starwarsFactProvider));
+//        topicQuestionAnswererMap.put(Topic.STAR_TREK, new MatchFactQuestionAnswerer(questionParser, questionFactMatcher, startrekFactProvider));
+//        topicQuestionAnswererMap.put(Topic.STAR_WARS, new MatchFactQuestionAnswerer(questionParser, questionFactMatcher, starwarsFactProvider));
 
         EvaluationConfig evaluationConfig = new EvaluationConfig(topics, questionsTypes, topicResourceMap, topicQuestionAnswererMap, limit);
 
         Evaluator evaluator = new Evaluator(evaluationConfig);
 
         evaluator.start();
+
+        // visualize results
+        monitor.render(new SimpleTextRenderer());
+
+        // shutdown measurement framework
+        tearDown();
+    }
+
+    private static void setup() {
+        BasicEtmConfigurator.configure(true);
+        monitor = EtmManager.getEtmMonitor();
+        monitor.start();
+    }
+
+    private static void tearDown() {
+        monitor.stop();
     }
 
 }

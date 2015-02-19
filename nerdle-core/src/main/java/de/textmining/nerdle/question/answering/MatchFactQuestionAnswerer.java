@@ -28,6 +28,9 @@ import de.textmining.nerdle.question.answering.model.Answer;
 import de.textmining.nerdle.question.answering.model.NerdleFact;
 import de.textmining.nerdle.question.answering.model.Question;
 import de.textmining.nerdle.question.answering.question.parsing.QuestionParser;
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 
 /**
  * Main implementation of @QuestionAnswerer interface. It requires three classes
@@ -38,6 +41,8 @@ import de.textmining.nerdle.question.answering.question.parsing.QuestionParser;
  *                 question to a fact in the database.
  */
 public class MatchFactQuestionAnswerer implements QuestionAnswerer {
+
+    private static final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
 
     private FactMatcher questionFactMatcher;
     private FactProvider factProvider;
@@ -54,6 +59,9 @@ public class MatchFactQuestionAnswerer implements QuestionAnswerer {
      */
     @Override
     public Answer answer(Question question) {
+
+        EtmPoint point = etmMonitor.createPoint("MatchFactQuestionAnswerer:answer");
+
         Answer finalAnswer = new Answer();
         try {
 
@@ -66,7 +74,6 @@ public class MatchFactQuestionAnswerer implements QuestionAnswerer {
             SortedSet<Map.Entry<String, Float>> answers = questionFactMatcher.getAnswers(factProvider, questionDesciption);
 
             for (Map.Entry<String, Float> answer : answers) {
-
                 finalAnswer.add(answer.getKey());
             }
 
@@ -74,6 +81,8 @@ public class MatchFactQuestionAnswerer implements QuestionAnswerer {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            point.collect();
         }
 
         // Final answer contains the string results sorted by score

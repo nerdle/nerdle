@@ -20,38 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
-import org.apache.commons.collections.CollectionUtils;
-
 import de.textmining.nerdle.question.answering.model.NerdleArg;
 
 public class SetStringMatcher implements StringMatcher {
-
-    public double distance(String a, String b) {
-        StringTokenizer tokenizerA = new StringTokenizer(a);
-
-        List<String> listA = new ArrayList<>();
-
-        while (tokenizerA.hasMoreElements()) {
-            listA.add(((String) tokenizerA.nextElement()).toLowerCase().trim());
-        }
-
-        StringTokenizer tokenizerB = new StringTokenizer(b);
-
-        List<String> listB = new ArrayList<>();
-
-        while (tokenizerB.hasMoreElements()) {
-            listB.add(((String) tokenizerB.nextElement()).toLowerCase().trim());
-        }
-
-        double intsect = CollectionUtils.intersection(listA, listB).size();
-        double union = CollectionUtils.union(listA, listB).size();
-
-        if (union != 0) {
-            return (intsect / union);
-        }
-
-        return 0.0;
-    }
 
     @Override
     public boolean match(String a, String b) {
@@ -80,20 +51,6 @@ public class SetStringMatcher implements StringMatcher {
     }
 
     @Override
-    public double argumentDistance(List<NerdleArg> arguments, NerdleArg argument) {
-
-        double max = 0.0;
-        for (NerdleArg a : arguments) {
-            double distance = distance(a.getText(), argument.getText());
-
-            if (distance > max) {
-                max = distance;
-            }
-        }
-        return max;
-    }
-
-    @Override
     public boolean argumentAndLabelMatch(List<NerdleArg> arguments, NerdleArg argument) {
 
         for (NerdleArg a : arguments) {
@@ -105,31 +62,6 @@ public class SetStringMatcher implements StringMatcher {
                 return true;
             }
         }
-        return false;
-    }
-
-    @Override
-    public boolean exploreArgumentAndLabelMatch(List<NerdleArg> arguments, NerdleArg argument) {
-
-        for (NerdleArg a : arguments) {
-
-            boolean matchArgument = true;
-
-            if (!argument.getText().isEmpty()) {
-                matchArgument = match(a.getText(), argument.getText());
-            }
-
-            boolean matchLabel = true;
-
-            if (!argument.getArgLabel().isEmpty()) {
-                matchLabel = a.getArgLabel().equals(argument.getArgLabel());
-            }
-
-            if (matchArgument && matchLabel) {
-                return true;
-            }
-        }
-
         return false;
     }
 

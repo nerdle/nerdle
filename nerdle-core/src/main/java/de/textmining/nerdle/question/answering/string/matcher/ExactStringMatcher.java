@@ -19,59 +19,34 @@ package de.textmining.nerdle.question.answering.string.matcher;
 import java.util.List;
 
 import de.textmining.nerdle.question.answering.model.NerdleArg;
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 
 public class ExactStringMatcher implements StringMatcher {
 
-    @Override
-    public double distance(String a, String b) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+    private static final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
 
     public boolean match(String a, String b) {
         return ((a.toLowerCase().trim()).equals(b.toLowerCase().trim()));
     }
 
-    @Override
-    public double argumentDistance(List<NerdleArg> arguments, NerdleArg argument) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
     public boolean argumentAndLabelMatch(List<NerdleArg> arguments, NerdleArg argument) {
+
+        EtmPoint point = etmMonitor.createPoint("ExactStringMatcher:argumentAndLabelMatch");
 
         for (NerdleArg a : arguments) {
             boolean match = match(a.getText(), argument.getText());
 
             if (match) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public boolean exploreArgumentAndLabelMatch(List<NerdleArg> arguments, NerdleArg argument) {
-
-        for (NerdleArg a : arguments) {
-
-            boolean matchArgument = true;
-
-            if (!argument.getText().isEmpty()) {
-                matchArgument = match(a.getText(), argument.getText());
-            }
-
-            boolean matchLabel = true;
-
-            if (!argument.getArgLabel().isEmpty()) {
-                matchLabel = a.getArgLabel().equals(argument.getArgLabel());
-            }
-
-            if (matchArgument && matchLabel) {
+                point.collect();
                 return true;
             }
         }
 
+        point.collect();
         return false;
+
     }
 
 }

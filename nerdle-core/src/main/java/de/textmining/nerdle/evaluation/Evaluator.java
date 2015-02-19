@@ -23,9 +23,14 @@ import de.textmining.nerdle.evaluation.metrics.JaccardMetric;
 import de.textmining.nerdle.information.extraction.ClearNLPHelper;
 import de.textmining.nerdle.question.answering.model.Answer;
 import de.textmining.nerdle.question.answering.model.Question;
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 
 public class Evaluator {
-
+    
+    private static final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
+    
     private EvaluationConfig evaluationConfig;
     private BooleanAnswerEvaluator booleanAnswerEvaluator;
 
@@ -36,7 +41,9 @@ public class Evaluator {
     }
 
     public void start() throws URISyntaxException, FileNotFoundException {
-
+        
+        EtmPoint point = etmMonitor.createPoint("Evaluator:start");
+        
         ClearNLPHelper.INSTANCE.getClass();
 
         System.out.println("QA Evaluaton Framework Results");
@@ -104,8 +111,10 @@ public class Evaluator {
             System.out.println(String.format("%-20s%10s", "No Answers:", noAnswers));
             System.out.println(String.format("%-20s%10s", "Precision:", (1.0 * correctAnswers) / (1.0 * questions)));
             System.out.println();
-
+            
         }
+        
+        point.collect();
 
     }
 }

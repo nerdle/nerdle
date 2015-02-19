@@ -27,8 +27,13 @@ import de.textmining.nerdle.question.answering.model.NerdleFact;
 import de.textmining.nerdle.question.answering.model.NerdlePredicate;
 import de.textmining.nerdle.question.answering.string.matcher.ExactStringMatcher;
 import de.textmining.nerdle.question.answering.string.matcher.StringMatcher;
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 
 public class DBFactProvider implements FactProvider {
+
+    private static final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
 
     private StringMatcher stringMatcher = new ExactStringMatcher();
 
@@ -58,6 +63,7 @@ public class DBFactProvider implements FactProvider {
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
+            
             try {
                 if (rs != null) {
                     rs.close();
@@ -70,13 +76,15 @@ public class DBFactProvider implements FactProvider {
                 ex.printStackTrace();
             }
         }
-
+        
         return facts;
     }
 
     @Override
     public List<NerdleFact> getFactsByMatch(NerdleFact questionFact, NerdleArg searchArg) {
-
+        
+        EtmPoint point = etmMonitor.createPoint("DBFactProvider:getFactsByMatch");
+        
         final List<NerdleArg> questionsArgs = new ArrayList<NerdleArg>();
         questionsArgs.addAll(questionFact.getArguments());
         questionsArgs.remove(searchArg);
@@ -107,7 +115,7 @@ public class DBFactProvider implements FactProvider {
 
                     if (stringMatcher.argumentAndLabelMatch(questionsArgs, answerArg))
                         foundArg = true;
-                    
+
                     if (answerArg.getArgLabel().equals(searchArg.getArgLabel()))
                         foundSearchArg = true;
 
@@ -121,6 +129,7 @@ public class DBFactProvider implements FactProvider {
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
+            point.collect();
             try {
                 if (rs != null) {
                     rs.close();
@@ -138,7 +147,9 @@ public class DBFactProvider implements FactProvider {
     }
 
     private List<NerdleFact> getFacts(ResultSet rs) throws SQLException {
-
+        
+        EtmPoint point = etmMonitor.createPoint("DBFactProvider:getFacts");
+        
         List<NerdleFact> facts = new ArrayList<>();
 
         NerdleFact fact = null;
@@ -146,7 +157,7 @@ public class DBFactProvider implements FactProvider {
         int currentFactId = -1;
 
         while (rs.next()) {
-
+            
             int id = rs.getInt(1);
 
             // new fact
@@ -179,14 +190,15 @@ public class DBFactProvider implements FactProvider {
             NerdleArg arg = new NerdleArg(argText, pos, argLabel, depLabel);
 
             fact.addArgument(arg);
-
         }
-
+        
         // the last fact
         if (fact != null) {
             facts.add(fact);
         }
-
+        
+        point.collect();
+        
         return facts;
     }
 

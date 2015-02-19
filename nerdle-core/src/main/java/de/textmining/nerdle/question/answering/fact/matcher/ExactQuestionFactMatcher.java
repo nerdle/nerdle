@@ -29,14 +29,21 @@ import org.apache.log4j.Logger;
 
 import de.textmining.nerdle.question.answering.model.NerdleFact;
 import de.textmining.nerdle.database.FactProvider;
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 
 public class ExactQuestionFactMatcher implements FactMatcher {
+    
+    private static final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
 
     protected final static Logger log = Logger.getLogger(ExactQuestionFactMatcher.class);
 
     @Override
     public SortedSet<Entry<String, Float>> getAnswers(FactProvider factProvider, List<NerdleFact> questionDesciption) {
-
+        
+        EtmPoint point = etmMonitor.createPoint("ExactQuestionFactMatcher:getAnswers");
+        
         SortedSet<Entry<String, Float>> sortedAnswers = new TreeSet<>();
 
         if (questionDesciption.size() == 1) {
@@ -56,11 +63,12 @@ public class ExactQuestionFactMatcher implements FactMatcher {
             }
 
             sortedAnswers = MapSorter.sortByValueDesc(answerScore.getAll());
-
+            
+            point.collect();
             return sortedAnswers;
         }
-
+        
+        point.collect();
         return sortedAnswers;
-
     }
 }
