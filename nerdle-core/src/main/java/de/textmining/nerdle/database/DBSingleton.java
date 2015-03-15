@@ -31,9 +31,9 @@ import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 
 public class DBSingleton {
-    
+
     private static final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
-    
+
     private HashMap<String, DBConnection> connections;
 
     public DBSingleton(String path) {
@@ -56,11 +56,11 @@ public class DBSingleton {
     }
 
     private void config(String path) throws ConfigurationException {
-        
+
         EtmPoint point = etmMonitor.createPoint("DBSingleton:config");
-        
+
         PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration(path);
-        
+
         String jdbc = propertiesConfiguration.getString("jdbc");
 
         Set<String> dbIds = new TreeSet<>();
@@ -78,9 +78,9 @@ public class DBSingleton {
         for (String dbId : dbIds) {
             String dbName = propertiesConfiguration.getString(dbId + "." + "name");
             String dbPath = propertiesConfiguration.getString(dbId + "." + "path");
-            connections.put(dbName, new DBConnection(jdbc + dbPath));
+            connections.put(dbName, new DBConnection(jdbc + dbPath + ";ACCESS_MODE_DATA=r"));
         }
-        
+
         point.collect();
 
     }

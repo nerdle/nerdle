@@ -55,7 +55,7 @@ public class Controller {
             System.err.println("topic: the topic used during the evaluation. simpsons, star_wars or star_trek");
             return;
         }
-        
+
         System.out.println(args[3]);
         System.out.println();
 
