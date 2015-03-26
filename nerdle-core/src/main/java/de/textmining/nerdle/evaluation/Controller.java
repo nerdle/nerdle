@@ -22,8 +22,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import de.textmining.nerdle.database.DBFactProvider;
 import de.textmining.nerdle.database.DBSingleton;
+import de.textmining.nerdle.database.FactProvider;
+import de.textmining.nerdle.database.MVFactProvider;
+import de.textmining.nerdle.database.MVSingleton;
 import de.textmining.nerdle.question.answering.MatchFactQuestionAnswerer;
 import de.textmining.nerdle.question.answering.QuestionAnswerer;
 import de.textmining.nerdle.question.answering.fact.matcher.ExactQuestionFactMatcher;
@@ -83,21 +85,28 @@ public class Controller {
         }
 
         DBSingleton dbSingleton = new DBSingleton(nerdleConfigPath);
+        MVSingleton mvSingleton = new MVSingleton(nerdleConfigPath);
 
         ClearNLPQuestionParser questionParser = new ClearNLPQuestionParser();
         ExactQuestionFactMatcher questionFactMatcher = new ExactQuestionFactMatcher();
 
-        DBFactProvider factProvider = null;
+        FactProvider factProvider = null;
 
         switch (topic) {
         case SIMPSONS:
-            factProvider = new DBFactProvider(dbSingleton.getConnections().get("simpsons"));
+            // factProvider = new
+            // DBFactProvider(dbSingleton.getConnections().get("simpsons"));
+            factProvider = new MVFactProvider(mvSingleton.getConnections().get("simpsons"));
             break;
         case STAR_TREK:
-            factProvider = new DBFactProvider(dbSingleton.getConnections().get("star-trek"));
+            // factProvider = new
+            // DBFactProvider(dbSingleton.getConnections().get("star-trek"));
+            factProvider = new MVFactProvider(mvSingleton.getConnections().get("star-trek"));
             break;
         case STAR_WARS:
-            factProvider = new DBFactProvider(dbSingleton.getConnections().get("star-wars"));
+            // factProvider = new
+            // DBFactProvider(dbSingleton.getConnections().get("star-wars"));
+            factProvider = new MVFactProvider(mvSingleton.getConnections().get("star-wars"));
             break;
         }
 

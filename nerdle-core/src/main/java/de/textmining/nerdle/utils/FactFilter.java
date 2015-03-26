@@ -17,20 +17,21 @@
 package de.textmining.nerdle.utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gson.Gson;
 
-import de.textmining.nerdle.database.H2Store;
 import de.textmining.nerdle.question.answering.model.NerdleArg;
 import de.textmining.nerdle.question.answering.model.NerdleFact;
 import de.textmining.nerdle.question.answering.model.NerdlePredicate;
 
-public class H2Exporter {
+public class FactFilter {
 
     static String FILTER = "^[a-zA-Z0-9äöüÄÖÜ.,!?:;\\-' ]*$";
     static String PRONOUN_REGEX = "(all|another|any|anybody|anyone|anything|both|each|each|other|either|everybody|everyone|everything|few|he|her|hers|herself|him|himself|his|i|it|its|itself|many|me|mine|more|most|much|myself|neither|no|one|nobody|none|nothing|one|one|another|other|others|ours|ourselves|several|she|some|somebody|someone|something|that|their|theirs|them|themselves|these|they|this|those|us|we|what|whatever|which|whichever|who|whoever|whom|whomever|whose|you|your|yours|yourself|yourselves)";
@@ -42,23 +43,15 @@ public class H2Exporter {
     public static void main(String[] args) throws Exception {
 
         if (args.length != 2) {
-            System.err.println("usage: input_dir h2store_dir.");
+            System.err.println("usage: input_dir output_dir.");
             System.err.println("input_dir: directory of the input json files.");
-            System.err.println("h2store_dir: directory of the the mvstore files.");
+            System.err.println("output_dir: directory of the output json files.");
             return;
         }
 
         File inputDir = new File(args[0]);
-        if (!inputDir.isDirectory()) {
-            System.err.println(inputDir);
-            System.err.println("Directory does not exist.");
-            return;
-        }
 
-        File h2store_dir = new File(args[1]);
-        Class.forName("org.h2.Driver");
-        H2Store h2Store = new H2Store("jdbc:h2:" + h2store_dir);
-        h2Store.createIndex();
+        File outputDir = new File(args[1]);
 
         File[] files = inputDir.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
@@ -69,9 +62,10 @@ public class H2Exporter {
         Gson gson = new Gson();
 
         BufferedReader reader;
-        int index = 0;
 
-        int factIndex = 1;
+        BufferedWriter writer = new BufferedWriter(new FileWriter(outputDir));
+
+        int index = 0;
 
         for (File file : files) {
 
@@ -80,11 +74,6 @@ public class H2Exporter {
             reader = new BufferedReader(new FileReader(file));
             String line;
             while ((line = reader.readLine()) != null) {
-
-                // if (factIndex == 1000000) {
-                // System.out.println("STOP");
-                // break;
-                // }
 
                 if ((index % 1000000) == 0) {
                     System.out.println();
@@ -112,18 +101,19 @@ public class H2Exporter {
                     }
 
                     if (found && fact.getSentence().length() < MAX_SENTENCE_LENGTH) {
-                        h2Store.addFact(factIndex, fact);
-                        factIndex++;
+                        writer.write(gson.toJson(fact));
+                        writer.newLine();
                     }
 
                 }
                 index++;
             }
+
+            reader.close();
+
         }
 
-        h2Store.persist();
-
-        h2Store.close();
+        writer.close();
 
     }
 

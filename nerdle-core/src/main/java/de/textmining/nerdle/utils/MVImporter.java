@@ -19,25 +19,29 @@ package de.textmining.nerdle.utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import org.h2.mvstore.MVMap;
+import org.h2.mvstore.MVStore;
 
 import com.google.gson.Gson;
 
-import de.textmining.nerdle.database.H2Store;
 import de.textmining.nerdle.question.answering.model.NerdleFact;
 
-public class H2Importer {
+public class MVImporter {
     public static void main(String[] args) throws Exception {
 
         if (args.length != 3) {
             System.err.println("usage: input_dir h2store_dir mode.");
             System.err.println("input_dir: directory of the input json files.");
-            System.err.println("h2store_dir: directory of the the mvstore files.");
+            System.err.println("output_dir: directory of output mvstore key-value store.");
             System.err.println("mode: full or eval.");
             return;
         }
 
         File inputDir = new File(args[0]);
-        File h2store_dir = new File(args[1]);
+        File outputDir = new File(args[1]);
         String mode = args[2];
 
         if (!mode.equals("full") && !mode.equals("eval")) {
@@ -45,13 +49,11 @@ public class H2Importer {
             return;
         }
 
-        Class.forName("org.h2.Driver");
-        H2Store h2Store = new H2Store("jdbc:h2:" + h2store_dir);
-        h2Store.createIndex();
-
         Gson gson = new Gson();
 
         int factIndex = 1;
+
+        HashMap<String, ArrayList<NerdleFact>> map = new HashMap<>();
 
         BufferedReader reader = new BufferedReader(new FileReader(inputDir));
         String line;
@@ -72,13 +74,21 @@ public class H2Importer {
                 fact.setSource("");
             }
 
-            h2Store.addFact(factIndex, fact);
+            if (!map.containsKey(fact.getPredicate().getRolesetID())) {
+                map.put(fact.getPredicate().getRolesetID(), new ArrayList<NerdleFact>());
+            }
+
+            map.get(fact.getPredicate().getRolesetID()).add(fact);
 
             factIndex++;
         }
 
         reader.close();
-        h2Store.persist();
-        h2Store.close();
+
+        MVStore s = MVStore.open(outputDir.getPath());
+        MVMap<String, ArrayList<NerdleFact>> mvMap = s.openMap("data");
+        mvMap.putAll(map);
+        s.close();
+
     }
 }

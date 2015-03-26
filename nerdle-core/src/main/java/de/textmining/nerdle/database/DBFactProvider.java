@@ -65,7 +65,7 @@ public class DBFactProvider implements FactProvider {
             point2.collect();
 
             facts = getFacts(rs);
-            
+
         } catch (SQLException ex) {
             ex.printStackTrace();
         } finally {
@@ -153,6 +153,48 @@ public class DBFactProvider implements FactProvider {
         }
 
         return facts;
+    }
+
+    @Override
+    public int getFactsCountByPredicate(NerdlePredicate questionPredicate) {
+        EtmPoint point = etmMonitor.createPoint("DBFactProvider:getFactsCountByPredicate");
+
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+
+        int count = 0;
+
+        try {
+
+            String stm = "SELECT count(*) FROM facts WHERE facts.rolesetid = ?";
+            pst = dbConnection.getConnection().prepareStatement(stm);
+            pst.setInt(1, questionPredicate.getRolesetID().hashCode());
+            EtmPoint point2 = etmMonitor.createPoint("DBFactProvider:Q3");
+            rs = pst.executeQuery();
+            point2.collect();
+
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            point.collect();
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (pst != null) {
+                    pst.close();
+                }
+
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return count;
     }
 
     private List<NerdleFact> getFacts(ResultSet rs) throws SQLException {

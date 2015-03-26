@@ -16,10 +16,13 @@
 
 package de.textmining.nerdle.question.answering.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NerdleFact {
+public class NerdleFact implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String sentence;
 

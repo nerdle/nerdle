@@ -16,16 +16,36 @@
 
 package de.textmining.nerdle.database;
 
-import java.util.List;
+import java.util.ArrayList;
 
-import de.textmining.nerdle.question.answering.model.NerdleArg;
+import org.h2.mvstore.MVMap;
+import org.h2.mvstore.MVStore;
+
 import de.textmining.nerdle.question.answering.model.NerdleFact;
-import de.textmining.nerdle.question.answering.model.NerdlePredicate;
 
-public interface FactProvider {
-    List<NerdleFact> getFactsByPredicate(NerdlePredicate questionPredicate);
+public class MVConnection {
 
-    int getFactsCountByPredicate(NerdlePredicate questionPredicate);
+    private MVStore mvStore;
 
-    List<NerdleFact> getFactsByMatch(NerdleFact questionFact, NerdleArg searchArg);
+    public MVConnection(MVStore mvStore) {
+        this.mvStore = mvStore;
+    }
+
+    public MVConnection(String mvPath) {
+        this.mvStore = new MVStore.Builder().fileName(mvPath).readOnly().open();
+    }
+
+    public MVMap<String, ArrayList<NerdleFact>> getMap() {
+        MVMap<String, ArrayList<NerdleFact>> mvMap = mvStore.openMap("data");
+        return mvMap;
+    }
+
+    public MVStore getMvStore() {
+        return mvStore;
+    }
+
+    public void setMvStore(MVStore mvStore) {
+        this.mvStore = mvStore;
+    }
+
 }
