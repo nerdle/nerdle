@@ -11,3 +11,4 @@ target/
 
 # Nerdle
 nerdle_config.properties
+nerdle-core/runner_scripts

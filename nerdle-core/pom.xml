@@ -116,6 +116,7 @@
 				<version>2.1</version>
 				<executions>
 					<execution>
+						<id>WithDependencies</id>
 						<phase>package</phase>
 						<goals>
 							<goal>shade</goal>
@@ -123,6 +124,25 @@
 						<configuration>
 							<outputFile>
 								${project.build.directory}/${project.artifactId}-${project.version}-withDependencies.jar
+							</outputFile>
+						</configuration>
+					</execution>
+					<execution>
+						<id>Dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+						<configuration>
+							<artifactSet>
+								<excludes>
+									<exclude>classworlds:classworlds</exclude>
+									<exclude>de.textmining:nerdle</exclude>
+									<exclude>de.textmining:nerdle-core</exclude>
+								</excludes>
+							</artifactSet>
+							<outputFile>
+								${project.build.directory}/${project.artifactId}-${project.version}-dependencies.jar
 							</outputFile>
 						</configuration>
 					</execution>

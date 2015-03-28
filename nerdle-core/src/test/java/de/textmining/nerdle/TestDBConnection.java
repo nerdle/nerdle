@@ -18,6 +18,9 @@ package de.textmining.nerdle;
 
 import de.textmining.nerdle.database.DBConnection;
 import de.textmining.nerdle.database.H2Store;
+import de.textmining.nerdle.question.answering.model.NerdleArg;
+import de.textmining.nerdle.question.answering.model.NerdleFact;
+import de.textmining.nerdle.question.answering.model.NerdlePredicate;
 
 public class TestDBConnection {
 
@@ -28,16 +31,19 @@ public class TestDBConnection {
         if (small == null) {
             H2Store h2Store = new H2Store("jdbc:h2:mem:small");
 
-            h2Store.addFact(1, "source", "sentence", "born", "bear", "bear.02");
+            NerdleFact nerdleFact1 = new NerdleFact("sentence", "source");
+            nerdleFact1.setPredicate(new NerdlePredicate("born", "bear", "bear.02"));
+            nerdleFact1.addArgument(new NerdleArg("Homer", "NNP", "A1", "nsubjpass"));
+            nerdleFact1.addArgument(new NerdleArg("Sprinflied", "NNP", "AM-LOC", "pobj"));
 
-            h2Store.addArgument(1, "Homer", "NNP", "A1", "nsubjpass", 1);
-            h2Store.addArgument(2, "Sprinflied", "NNP", "AM-LOC", "pobj", 1);
-
-            h2Store.addFact(2, "source", "sentence", "is", "be", "be.01");
-
-            h2Store.addArgument(3, "Homer", "NNP", "A1", "nsubj", 2);
-            h2Store.addArgument(4, "cool", "NNP", "A2", "acomp", 2);
-
+            NerdleFact nerdleFact2 = new NerdleFact("sentence", "source");
+            nerdleFact2.setPredicate(new NerdlePredicate("is", "be", "be.01"));
+            nerdleFact2.addArgument(new NerdleArg("Homer", "NNP", "A1", "nsubj"));
+            nerdleFact2.addArgument(new NerdleArg("cool", "NNP", "A2", "acomp"));
+            
+            h2Store.addFact(1, nerdleFact1);
+            h2Store.addFact(2, nerdleFact2);
+            
             h2Store.persist();
             h2Store.createIndex();
 

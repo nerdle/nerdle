@@ -16,7 +16,11 @@
 
 package de.textmining.nerdle.question.answering.model;
 
-public class NerdlePredicate {
+import java.io.Serializable;
+
+public class NerdlePredicate implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String text;
 
