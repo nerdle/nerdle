@@ -39,6 +39,9 @@ _Nerdle_ is now installed in your local maven repository.
    <version>0.0.1-SNAPSHOT</version>
 </dependency>
 ```
+## Demo
+
+We present a Web demonstrator in which users can query the fact base. http://www.textmining.tu-berlin.de/nerdle/
 
 ## Sample Usage
 
