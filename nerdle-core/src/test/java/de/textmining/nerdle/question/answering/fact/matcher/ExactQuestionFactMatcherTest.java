@@ -35,13 +35,13 @@ public class ExactQuestionFactMatcherTest {
 
     private static ClearNLPQuestionParser questionParser;
     private static DBFactProvider factProvider;
-    private static ExactQuestionFactMatcher questionFactMatcher;
+    private static QuestionFactMatcher questionFactMatcher;
 
     @BeforeClass
     public static void setup() throws Exception {
         questionParser = new ClearNLPQuestionParser();
         factProvider = new DBFactProvider(TestDBConnection.small());
-        questionFactMatcher = new ExactQuestionFactMatcher();
+        questionFactMatcher = new QuestionFactMatcher();
     }
 
     @Test

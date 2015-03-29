@@ -27,8 +27,10 @@ import de.textmining.nerdle.database.MVFactProvider;
 import de.textmining.nerdle.database.MVSingleton;
 import de.textmining.nerdle.question.answering.MatchFactQuestionAnswerer;
 import de.textmining.nerdle.question.answering.QuestionAnswerer;
-import de.textmining.nerdle.question.answering.fact.matcher.ExactQuestionFactMatcher;
+import de.textmining.nerdle.question.answering.fact.matcher.QuestionFactMatcher;
 import de.textmining.nerdle.question.answering.question.parsing.ClearNLPQuestionParser;
+import de.textmining.nerdle.question.answering.string.matcher.SetStringMatcher;
+import de.textmining.nerdle.question.answering.string.matcher.StringMatcher;
 import etm.core.configuration.BasicEtmConfigurator;
 import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmMonitor;
@@ -86,19 +88,22 @@ public class Controller {
         MVSingleton mvSingleton = new MVSingleton(nerdleConfigPath);
 
         ClearNLPQuestionParser questionParser = new ClearNLPQuestionParser();
-        ExactQuestionFactMatcher questionFactMatcher = new ExactQuestionFactMatcher();
+        QuestionFactMatcher questionFactMatcher = new QuestionFactMatcher();
 
         FactProvider factProvider = null;
 
+//        StringMatcher stringMatcher = new ExactStringMatcher();
+        StringMatcher stringMatcher = new SetStringMatcher();
+//
         switch (topic) {
         case SIMPSONS:
-            factProvider = new MVFactProvider(mvSingleton.getConnections().get("simpsons"));
+            factProvider = new MVFactProvider(mvSingleton.getConnections().get("simpsons"), stringMatcher);
             break;
         case STAR_TREK:
-            factProvider = new MVFactProvider(mvSingleton.getConnections().get("star-trek"));
+            factProvider = new MVFactProvider(mvSingleton.getConnections().get("star-trek"), stringMatcher);
             break;
         case STAR_WARS:
-            factProvider = new MVFactProvider(mvSingleton.getConnections().get("star-wars"));
+            factProvider = new MVFactProvider(mvSingleton.getConnections().get("star-wars"), stringMatcher);
             break;
         }
 

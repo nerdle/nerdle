@@ -21,8 +21,13 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import de.textmining.nerdle.question.answering.model.NerdleArg;
+import etm.core.configuration.EtmManager;
+import etm.core.monitor.EtmMonitor;
+import etm.core.monitor.EtmPoint;
 
 public class SetStringMatcher implements StringMatcher {
+
+    private static final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
 
     @Override
     public boolean match(String a, String b) {
@@ -53,15 +58,21 @@ public class SetStringMatcher implements StringMatcher {
     @Override
     public boolean argumentAndLabelMatch(List<NerdleArg> arguments, NerdleArg argument) {
 
+        EtmPoint point = etmMonitor.createPoint("SetStringMatcher:argumentAndLabelMatch");
+
         for (NerdleArg a : arguments) {
             boolean match = match(a.getText(), argument.getText());
 
             boolean matchLabel = a.getArgLabel().equals(argument.getArgLabel());
 
             if (match && matchLabel) {
+                point.collect();
                 return true;
             }
         }
+
+        point.collect();
+
         return false;
     }
 

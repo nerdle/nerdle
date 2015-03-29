@@ -6,7 +6,6 @@ import java.util.List;
 import de.textmining.nerdle.question.answering.model.NerdleArg;
 import de.textmining.nerdle.question.answering.model.NerdleFact;
 import de.textmining.nerdle.question.answering.model.NerdlePredicate;
-import de.textmining.nerdle.question.answering.string.matcher.ExactStringMatcher;
 import de.textmining.nerdle.question.answering.string.matcher.StringMatcher;
 import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmMonitor;
@@ -16,11 +15,12 @@ public class MVFactProvider implements FactProvider {
 
     private static final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
 
-    private StringMatcher stringMatcher = new ExactStringMatcher();
+    private StringMatcher stringMatcher;
 
     private MVConnection mvConnection;
 
-    public MVFactProvider(MVConnection mvConnection) {
+    public MVFactProvider(MVConnection mvConnection, StringMatcher stringMatcher) {
+        this.stringMatcher = stringMatcher;
         this.mvConnection = mvConnection;
     }
 

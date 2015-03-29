@@ -33,11 +33,11 @@ import etm.core.configuration.EtmManager;
 import etm.core.monitor.EtmMonitor;
 import etm.core.monitor.EtmPoint;
 
-public class ExactQuestionFactMatcher implements FactMatcher {
+public class QuestionFactMatcher implements FactMatcher {
     
     private static final EtmMonitor etmMonitor = EtmManager.getEtmMonitor();
 
-    protected final static Logger log = Logger.getLogger(ExactQuestionFactMatcher.class);
+    protected final static Logger log = Logger.getLogger(QuestionFactMatcher.class);
 
     @Override
     public SortedSet<Entry<String, Float>> getAnswers(FactProvider factProvider, List<NerdleFact> questionDesciption) {
