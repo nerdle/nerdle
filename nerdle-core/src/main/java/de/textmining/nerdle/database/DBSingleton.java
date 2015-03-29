@@ -93,8 +93,4 @@ public class DBSingleton {
         this.connections = connections;
     }
 
-    public static void main(String[] args) {
-        new DBSingleton();
-    }
-
 }

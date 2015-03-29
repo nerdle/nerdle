@@ -153,7 +153,7 @@ public enum ClearNLPHelper {
         return nerdleFacts;
     }
 
-    public void pirntExtractions(String text) {
+    public void printExtractions(String text) {
 
         DEPTree tree;
 

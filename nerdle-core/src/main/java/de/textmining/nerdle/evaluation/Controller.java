@@ -92,9 +92,9 @@ public class Controller {
 
         FactProvider factProvider = null;
 
-//        StringMatcher stringMatcher = new ExactStringMatcher();
+        // StringMatcher stringMatcher = new ExactStringMatcher();
         StringMatcher stringMatcher = new SetStringMatcher();
-//
+        //
         switch (topic) {
         case SIMPSONS:
             factProvider = new MVFactProvider(mvSingleton.getConnections().get("simpsons"), stringMatcher);

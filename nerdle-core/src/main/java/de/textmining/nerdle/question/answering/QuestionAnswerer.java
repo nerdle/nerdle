@@ -27,8 +27,6 @@ import de.textmining.nerdle.question.answering.model.Question;
  */
 public interface QuestionAnswerer {
 
-    /*
-     * Get an answer to a question.
-     */
     public Answer answer(Question question);
+
 }

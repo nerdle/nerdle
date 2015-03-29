@@ -22,6 +22,10 @@ import de.textmining.nerdle.question.answering.model.Question;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Dummy implementation of @QuestionAnswerer interface.
+ * 
+ */
 public class DummyQuestionAnswerer implements QuestionAnswerer {
 
     @Override

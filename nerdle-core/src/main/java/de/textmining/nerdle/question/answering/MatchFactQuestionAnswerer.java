@@ -34,11 +34,10 @@ import etm.core.monitor.EtmPoint;
 
 /**
  * Main implementation of @QuestionAnswerer interface. It requires three classes
- * in order to run: A
+ * in order to run: A @QuestionParser that interprets a question, a @FactProvider
+ * that gives access to a database of facts, and a @FactMatcher that matches the
+ * question to a fact in the database.
  * 
- * @QuestionParser that interprets a question, a @FactProvider that gives access
- *                 to a database of facts, and a @FactMatcher that matches the
- *                 question to a fact in the database.
  */
 public class MatchFactQuestionAnswerer implements QuestionAnswerer {
 
@@ -53,10 +52,7 @@ public class MatchFactQuestionAnswerer implements QuestionAnswerer {
         this.factProvider = factProvider;
         this.questionParser = questionParser;
     }
-
-    /*
-     * Get an answer to a question.
-     */
+    
     @Override
     public Answer answer(Question question) {
 

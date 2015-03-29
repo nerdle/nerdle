@@ -58,7 +58,7 @@ public class MVSingleton {
 
     private void config(String path) throws ConfigurationException {
 
-        EtmPoint point = etmMonitor.createPoint("DBSingleton:config");
+        EtmPoint point = etmMonitor.createPoint("MVSingleton:config");
 
         PropertiesConfiguration propertiesConfiguration = new PropertiesConfiguration(path);
 

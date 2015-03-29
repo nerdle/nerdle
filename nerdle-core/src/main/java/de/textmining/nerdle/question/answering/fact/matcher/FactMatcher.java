@@ -24,18 +24,20 @@ import java.util.Map;
 import java.util.SortedSet;
 
 /**
- * 
- * The FactMatcher takes a question interpreted as a list of @NerdleFact and
- * determines possible answers from the @FactProvider. The answers are sorted by
- * score, highest first.
+ * This class takes a question interpreted as a list of @NerdleFact and
+ * determines possible answers from the @FactProvider. 
  * 
  */
 public interface FactMatcher {
 
     /**
-     * Get matching answers from the @FactProvider for a question expressed as
+     * Returns matching answers from the @FactProvider for a question interpreted as a list of @NerdleFact.
      * 
-     * @List<NerdleFact>
+     * @param factProvider
+     *            matching answers from the @FactProvider
+     * @param questionDesciption
+     *            question is interpreted as @List<NerdleFact>
+     * @return
      */
     SortedSet<Map.Entry<String, Float>> getAnswers(FactProvider factProvider, List<NerdleFact> questionDesciption);
 }

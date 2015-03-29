@@ -81,8 +81,7 @@ public class H2Store {
         try {
             Statement stat = conn.createStatement();
             System.out.println("Create facts_rolesetID_idx...");
-            int executeUpdate = stat.executeUpdate("CREATE INDEX facts_rolesetID_idx ON facts(rolesetid);");
-            System.out.println(executeUpdate);
+            stat.executeUpdate("CREATE INDEX facts_rolesetID_idx ON facts(rolesetid);");
         } catch (SQLException e) {
             e.printStackTrace();
         }
