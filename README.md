@@ -34,7 +34,7 @@ _Nerdle_ is now installed in your local maven repository.
 
 ```xml
 <dependency>
-   <groupId>de.tu_berlin.dima</groupId>
+   <groupId>de.textmining</groupId>
    <artifactId>nerdle-core</artifactId>
    <version>0.0.1-SNAPSHOT</version>
 </dependency>
