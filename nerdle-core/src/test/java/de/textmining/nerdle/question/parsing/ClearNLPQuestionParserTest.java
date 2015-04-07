@@ -23,6 +23,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.textmining.nerdle.information.extraction.ClearNLPHelper;
@@ -36,13 +37,13 @@ public class ClearNLPQuestionParserTest {
 
     private static ClearNLPQuestionParser questionParser;
 
-    @BeforeClass
     public static void setup() {
         questionParser = new ClearNLPQuestionParser();
         ClearNLPHelper.INSTANCE.getClass();
     }
 
     @Test
+    @Ignore
     public void testWho() throws Exception {
         Question question = new Question("Who is Homer’s father?");
 
@@ -66,6 +67,7 @@ public class ClearNLPQuestionParserTest {
     }
 
     @Test
+    @Ignore
     public void testNoQuestionArg() throws Exception {
         Question question = new Question("Which one has devoted her life to celibacy?");
         List<NerdleFact> analyzedQuestions = questionParser.analyzeQuestion(question);

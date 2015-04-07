@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.textmining.nerdle.question.answering.DummyQuestionAnswerer;
@@ -30,6 +31,7 @@ import de.textmining.nerdle.question.answering.QuestionAnswerer;
 public class EvaluatorTest {
 
     @Test
+    @Ignore
     public void test() throws Exception {
         List<Topic> topics = new ArrayList<>();
         topics.addAll(Arrays.asList(Topic.values()));

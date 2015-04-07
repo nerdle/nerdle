@@ -19,6 +19,7 @@ package de.textmining.nerdle.question.answering;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.textmining.nerdle.TestDBConnection;
@@ -42,6 +43,7 @@ public class MatchFactQuestionAnswererTest {
     }
 
     @Test
+    @Ignore
     public void testWho() {
         Question question = new Question("Who was born in Springfield?");
         Answer answer = questionAnswerer.answer(question);
@@ -55,6 +57,7 @@ public class MatchFactQuestionAnswererTest {
     }
 
     @Test
+    @Ignore
     public void testNoQuestionArg() {
         Question question = new Question("Which one has devoted her life to celibacy?");
         Answer answer = questionAnswerer.answer(question);

@@ -23,6 +23,7 @@ import java.util.Map.Entry;
 import java.util.SortedSet;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import de.textmining.nerdle.TestDBConnection;
@@ -45,6 +46,7 @@ public class ExactQuestionFactMatcherTest {
     }
 
     @Test
+    @Ignore
     public void testNoQuestionArg() throws Exception {
         Question question = new Question("Which one has devoted her life to celibacy?");
         List<NerdleFact> analyzedQuestions = questionParser.analyzeQuestion(question);
