@@ -97,7 +97,7 @@
 				<configuration>
 					<forkCount>1</forkCount>
 					<reuseForks>true</reuseForks>
-					<argLine>-Xms2048m -Xmx4096m -XX:MaxPermSize=4096m</argLine>
+					<argLine>-Xmx4g -XX:+UseConcMarkSweepGC</argLine>
 				</configuration>
 			</plugin>
 

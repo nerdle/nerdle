@@ -16,19 +16,18 @@
 
 package de.textmining.nerdle.extraction;
 
+import static org.junit.Assert.assertTrue;
+
 import java.util.List;
 
-import org.junit.Ignore;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
 import de.textmining.nerdle.information.extraction.ClearNLPHelper;
 import de.textmining.nerdle.question.answering.model.NerdleFact;
 
 public class ClearNLPHelperTest {
 
     @Test
-    @Ignore
     public void test() {
         ClearNLPHelper instance = ClearNLPHelper.INSTANCE;
         String sentence = "In another episode, Homer unwittingly works for a terrorist.";
