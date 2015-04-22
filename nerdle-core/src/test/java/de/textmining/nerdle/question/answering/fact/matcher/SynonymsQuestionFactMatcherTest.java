@@ -25,23 +25,47 @@ import java.util.SortedSet;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.textmining.nerdle.TestDBConnection;
-import de.textmining.nerdle.database.DBFactProvider;
+import de.textmining.nerdle.TestMVConnection;
+import de.textmining.nerdle.database.MVFactProvider;
 import de.textmining.nerdle.question.answering.model.NerdleFact;
 import de.textmining.nerdle.question.answering.model.Question;
 import de.textmining.nerdle.question.answering.question.parsing.ClearNLPQuestionParser;
+import de.textmining.nerdle.question.answering.string.matcher.SetStringMatcher;
 
-public class ExactQuestionFactMatcherTest {
+public class SynonymsQuestionFactMatcherTest {
 
     private static ClearNLPQuestionParser questionParser;
-    private static DBFactProvider factProvider;
-    private static QuestionFactMatcher questionFactMatcher;
+    private static MVFactProvider factProvider;
+    private static SynonymsQuestionFactMatcher questionFactMatcher;
 
     @BeforeClass
     public static void setup() throws Exception {
         questionParser = new ClearNLPQuestionParser();
-        factProvider = new DBFactProvider(TestDBConnection.small());
-        questionFactMatcher = new QuestionFactMatcher();
+        factProvider = new MVFactProvider(TestMVConnection.small(), new SetStringMatcher());
+        questionFactMatcher = new SynonymsQuestionFactMatcher();
+    }
+
+    @Test
+    public void testWho() throws Exception {
+        Question question = new Question("Who was born in Springfield?");
+        List<NerdleFact> analyzedQuestions = questionParser.analyzeQuestion(question);
+        SortedSet<Entry<String, Float>> answers = questionFactMatcher.getAnswers(factProvider, analyzedQuestions);
+        assertEquals(1, answers.size());
+
+        question = new Question("Who is cool?");
+        analyzedQuestions = questionParser.analyzeQuestion(question);
+        answers = questionFactMatcher.getAnswers(factProvider, analyzedQuestions);
+        assertEquals(1, answers.size());
+        
+        question = new Question("Who snores at home?");
+        analyzedQuestions = questionParser.analyzeQuestion(question);
+        answers = questionFactMatcher.getAnswers(factProvider, analyzedQuestions);
+        assertEquals(1, answers.size());
+        
+        question = new Question("Who belchs at home?");
+        analyzedQuestions = questionParser.analyzeQuestion(question);
+        answers = questionFactMatcher.getAnswers(factProvider, analyzedQuestions);
+        assertEquals(1, answers.size());
     }
 
     @Test

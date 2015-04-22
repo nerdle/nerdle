@@ -21,12 +21,13 @@ import static org.junit.Assert.assertEquals;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.textmining.nerdle.TestDBConnection;
-import de.textmining.nerdle.database.DBFactProvider;
+import de.textmining.nerdle.TestMVConnection;
+import de.textmining.nerdle.database.MVFactProvider;
 import de.textmining.nerdle.question.answering.fact.matcher.QuestionFactMatcher;
 import de.textmining.nerdle.question.answering.model.Answer;
 import de.textmining.nerdle.question.answering.model.Question;
 import de.textmining.nerdle.question.answering.question.parsing.ClearNLPQuestionParser;
+import de.textmining.nerdle.question.answering.string.matcher.SetStringMatcher;
 
 public class MatchFactQuestionAnswererTest {
 
@@ -36,7 +37,7 @@ public class MatchFactQuestionAnswererTest {
     public static void setup() throws Exception {
         ClearNLPQuestionParser questionParser = new ClearNLPQuestionParser();
         QuestionFactMatcher questionFactMatcher = new QuestionFactMatcher();
-        DBFactProvider factProvider = new DBFactProvider(TestDBConnection.small());
+        MVFactProvider factProvider = new MVFactProvider(TestMVConnection.small(), new SetStringMatcher());
 
         questionAnswerer = new MatchFactQuestionAnswerer(questionParser, questionFactMatcher, factProvider);
     }
@@ -45,7 +46,7 @@ public class MatchFactQuestionAnswererTest {
     public void testWho() {
         Question question = new Question("Who was born in Springfield?");
         Answer answer = questionAnswerer.answer(question);
-        assertEquals(0, answer.getAnswers().size());
+        assertEquals(1, answer.getAnswers().size());
 
         question = new Question("Who is cool?");
         answer = questionAnswerer.answer(question);

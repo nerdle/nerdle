@@ -16,38 +16,57 @@
 
 package de.textmining.nerdle;
 
-import de.textmining.nerdle.database.DBConnection;
-import de.textmining.nerdle.database.H2Store;
+import java.util.ArrayList;
+
+import org.h2.mvstore.MVMap;
+import org.h2.mvstore.MVStore;
+
+import de.textmining.nerdle.database.MVConnection;
 import de.textmining.nerdle.question.answering.model.NerdleArg;
 import de.textmining.nerdle.question.answering.model.NerdleFact;
 import de.textmining.nerdle.question.answering.model.NerdlePredicate;
 
-public class TestDBConnection {
+public class TestMVConnection {
 
-    private static DBConnection small = null;
+    private static MVConnection small = null;
 
-    public synchronized static DBConnection small() {
+    public synchronized static MVConnection small() {
 
         if (small == null) {
-            H2Store h2Store = new H2Store("jdbc:h2:mem:small");
 
+            MVStore mvStore = new MVStore.Builder().fileName(null).open();
+            MVMap<String, ArrayList<NerdleFact>> mvMap = mvStore.openMap("data");
+            
             NerdleFact nerdleFact1 = new NerdleFact("sentence", "source");
             nerdleFact1.setPredicate(new NerdlePredicate("born", "bear", "bear.02"));
             nerdleFact1.addArgument(new NerdleArg("Homer", "NNP", "A1", "nsubjpass"));
-            nerdleFact1.addArgument(new NerdleArg("in Springfield", "IN NNP", "AM-LOC", "prep"));
+            nerdleFact1.addArgument(new NerdleArg("in Springfield", "in NNP", "AM-LOC", "prep"));
 
             NerdleFact nerdleFact2 = new NerdleFact("sentence", "source");
             nerdleFact2.setPredicate(new NerdlePredicate("is", "be", "be.01"));
             nerdleFact2.addArgument(new NerdleArg("Homer", "NNP", "A1", "nsubj"));
             nerdleFact2.addArgument(new NerdleArg("cool", "NNP", "A2", "acomp"));
             
-            h2Store.addFact(1, nerdleFact1);
-            h2Store.addFact(2, nerdleFact2);
+            NerdleFact nerdleFact3 = new NerdleFact("sentence", "source");
+            nerdleFact3.setPredicate(new NerdlePredicate("belchs", "belch", "belch.01"));
+            nerdleFact3.addArgument(new NerdleArg("Homer", "NNP", "A0", "nn"));
+            nerdleFact3.addArgument(new NerdleArg("at home", "NNP", "AM-LOC", "prep"));
             
-            h2Store.persist();
-            h2Store.createIndex();
+            ArrayList<NerdleFact> list1 = new ArrayList<NerdleFact>();
+            list1.add(nerdleFact1);
 
-            small = new DBConnection(h2Store.getConn());
+            ArrayList<NerdleFact> list2 = new ArrayList<NerdleFact>();
+            list2.add(nerdleFact2);
+            
+            ArrayList<NerdleFact> list3 = new ArrayList<NerdleFact>();
+            list3.add(nerdleFact3);
+            
+            mvMap.put("bear.02", list1);
+            mvMap.put("be.01", list2);
+            mvMap.put("belch.01", list3);
+            
+            small = new MVConnection(mvStore);
+
         }
 
         return small;

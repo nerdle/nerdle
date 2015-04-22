@@ -35,4 +35,12 @@ public class ClearNLPHelperTest {
         assertTrue(extractFactsFromSentence.size() > 0);
     }
 
+    @Test
+    public void testPrintExtraction() {
+        ClearNLPHelper instance = ClearNLPHelper.INSTANCE;
+        String text = "Who snores at home?";
+        instance.printExtractions(text);
+        System.out.println(instance.extractFactsFromSentence(text, "source"));
+    }
+
 }

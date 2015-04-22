@@ -27,7 +27,8 @@ import de.textmining.nerdle.database.MVFactProvider;
 import de.textmining.nerdle.database.MVSingleton;
 import de.textmining.nerdle.question.answering.MatchFactQuestionAnswerer;
 import de.textmining.nerdle.question.answering.QuestionAnswerer;
-import de.textmining.nerdle.question.answering.fact.matcher.QuestionFactMatcher;
+import de.textmining.nerdle.question.answering.fact.matcher.FactMatcher;
+import de.textmining.nerdle.question.answering.fact.matcher.SynonymsQuestionFactMatcher;
 import de.textmining.nerdle.question.answering.question.parsing.ClearNLPQuestionParser;
 import de.textmining.nerdle.question.answering.string.matcher.SetStringMatcher;
 import de.textmining.nerdle.question.answering.string.matcher.StringMatcher;
@@ -88,7 +89,7 @@ public class Controller {
         MVSingleton mvSingleton = new MVSingleton(nerdleConfigPath);
 
         ClearNLPQuestionParser questionParser = new ClearNLPQuestionParser();
-        QuestionFactMatcher questionFactMatcher = new QuestionFactMatcher();
+        FactMatcher questionFactMatcher = new SynonymsQuestionFactMatcher();
 
         FactProvider factProvider = null;
 

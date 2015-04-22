@@ -69,6 +69,14 @@ public class NerdleFact implements Serializable {
     public void addArgument(NerdleArg arg) {
         arguments.add(arg);
     }
+    
+    public NerdleFact(String sentence, String source, NerdlePredicate predicate, List<NerdleArg> arguments, NerdleArg questionArg) {
+        this.sentence = sentence;
+        this.source = source;
+        this.predicate = predicate;
+        this.arguments = arguments;
+        this.questionArg = questionArg;
+    }
 
     public NerdleFact(String sentence, String source, NerdlePredicate predicate, List<NerdleArg> arguments) {
         this.sentence = sentence;
@@ -93,7 +101,7 @@ public class NerdleFact implements Serializable {
 
     @Override
     public NerdleFact clone() {
-        return new NerdleFact(sentence, source, predicate, new ArrayList<>(arguments));
+        return new NerdleFact(sentence, source, predicate, new ArrayList<>(arguments), questionArg);
     }
 
     @Override

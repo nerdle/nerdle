@@ -23,18 +23,19 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import de.textmining.nerdle.TestDBConnection;
+import de.textmining.nerdle.TestMVConnection;
 import de.textmining.nerdle.question.answering.model.NerdleArg;
 import de.textmining.nerdle.question.answering.model.NerdleFact;
 import de.textmining.nerdle.question.answering.model.NerdlePredicate;
+import de.textmining.nerdle.question.answering.string.matcher.SetStringMatcher;
 
-public class DBFactProviderTest {
+public class MVFactProviderTest {
 
-    private static DBFactProvider factProvider;
+    private static MVFactProvider factProvider;
 
     @BeforeClass
     public static void setup() throws Exception {
-        factProvider = new DBFactProvider(TestDBConnection.small());
+        factProvider = new MVFactProvider(TestMVConnection.small(), new SetStringMatcher());
     }
 
     @Test

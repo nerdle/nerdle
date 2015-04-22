@@ -41,7 +41,7 @@ public class ClearNLPQuestionParserTest {
         questionParser = new ClearNLPQuestionParser();
         ClearNLPHelper.INSTANCE.getClass();
     }
-
+    
     @Test
     public void testWho() throws Exception {
         Question question = new Question("Who is Homer’s father?");

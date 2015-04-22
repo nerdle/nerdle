@@ -34,7 +34,7 @@ public class MVConnection {
     public MVConnection(String mvPath) {
         this.mvStore = new MVStore.Builder().fileName(mvPath).readOnly().open();
     }
-
+    
     public MVMap<String, ArrayList<NerdleFact>> getMap() {
         MVMap<String, ArrayList<NerdleFact>> mvMap = mvStore.openMap("data");
         return mvMap;
