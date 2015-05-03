@@ -7,7 +7,7 @@ Topic-Specific Question Answering Using Wikia Seeds
 
 ## Summary
 
-The WIKIA project maintains wikis across a diverse range of subjects from areas of popular culture. Each wiki consists of collaboratively authored content and focuses on a particular topic, including franchises such as “Star Trek”, “Star Wars” and “The Simpsons”. Nerdle is a topic-expert Question Answering system which can answer questions on a particular topic and supports questions of the types “Who”, “What”, “Where”, “Why”, “When”, “Which”, “Whom” and “How?”.
+The WIKIA project maintains wikis across a diverse range of subjects from areas of popular culture. Each wiki consists of collaboratively authored content and focuses on a particular topic, including franchises such as “Star Trek”, “Star Wars” and “The Simpsons”. Nerdle is a topic-expert Question Answering system which can answer questions on a particular topic and supports factoid question types.
 
 ## Get Started
 
